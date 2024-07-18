@@ -1,0 +1,72 @@
+﻿@page "/RackConfiguration/RackConfigurationPage"
+@rendermode InteractiveServer
+@using BAL
+@inject RackConfigurationRepo RackConfigurationRepo
+
+
+<PageTitle>RackConfigurationPage</PageTitle>
+
+<h3>RackConfigurationPage</h3>
+
+<p>@InputValue</p>
+
+
+<input type="number" @onchange="OnChange" value="@InputValue" />
+<ul>
+@foreach (var row in Rows)
+    {
+        <li>
+            <p>@row.RowNumber</p>
+            @row.Code
+        </li>
+    }
+</ul>
+
+
+@code {
+
+    public class Row
+    {
+        public int RowNumber { get; set; }
+        public string Code { get; set; }
+
+        public Row(int rowNumber)
+        {
+            RowNumber = rowNumber;
+        }
+
+    }
+
+    public List<Row> Rows { get; set; }
+
+    public int InputValue { get; set; }
+
+
+
+    protected override void OnInitialized()
+    {
+
+
+        Rows = new List<Row>();
+        InputValue = 0;
+    }
+
+    // public async Task<int> Save()
+    // {
+    //   return await RackConfigurationRepo.SaveChanges();
+    // }
+
+
+    private void OnChange(ChangeEventArgs e)
+    {
+        string convertedInput = e.Value.ToString() ?? "0";
+        InputValue = int.Parse(convertedInput);
+
+        Rows = new List<Row>();
+        for (int i = 0; i < InputValue; i++)
+        {
+            Row row = new Row(i);
+            Rows.Add(row);
+        }
+    }
+}

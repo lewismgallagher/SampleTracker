@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleTracker", "SampleTracker\SampleTracker\SampleTracker.csproj", "{64AB2EC8-BA3F-4699-8883-0F5FA5E3D366}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleTracker", "SampleTracker\SampleTracker\SampleTracker.csproj", "{64AB2EC8-BA3F-4699-8883-0F5FA5E3D366}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleTracker.Client", "SampleTracker\SampleTracker.Client\SampleTracker.Client.csproj", "{E9DEDE25-DDE3-4043-A389-50243651E158}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleTracker.Client", "SampleTracker\SampleTracker.Client\SampleTracker.Client.csproj", "{E9DEDE25-DDE3-4043-A389-50243651E158}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{86FB6223-42B3-422C-B93F-A6E587054273}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{86FB6223-42B3-422C-B93F-A6E587054273}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAL", "BAL\BAL.csproj", "{C61FFC9A-18D1-454A-8FCE-B948853DCD0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAL", "BAL\BAL.csproj", "{C61FFC9A-18D1-454A-8FCE-B948853DCD0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,6 +3,8 @@ using DAL.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using SampleTracker.Client.Pages;
 using SampleTracker.Components;
+using BAL;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +14,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<IApplicationDbContext,ApplicationDbContext>(options =>
+builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+//builder.Services.AddScoped<RackConfigurationRepo,RackConfigurationRepo>();
 
 var app = builder.Build();
 
