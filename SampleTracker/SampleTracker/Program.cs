@@ -14,15 +14,15 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+builder.Services.AddDbContext<ISampleTrackerDbContext, SampleTrackerDbContext>(options =>
     options.UseSqlServer(connectionString));
-//builder.Services.AddScoped<RackConfigurationRepo,RackConfigurationRepo>();
+builder.Services.AddScoped<RackConfigurationRepo, RackConfigurationRepo>();
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<SampleTrackerDbContext>();
 
     if (!dbContext.Database.CanConnect())
     {

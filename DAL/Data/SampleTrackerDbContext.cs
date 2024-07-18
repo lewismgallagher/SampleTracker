@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Data
 {
-    public class SampleTrackerDbContext : DbContext
+    public class SampleTrackerDbContext : IdentityDbContext<ApplicationUser>, ISampleTrackerDbContext
     {
         public SampleTrackerDbContext(DbContextOptions<SampleTrackerDbContext> options) : base(options)
         { 
         
         }
-        public DbSet<User> Users { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Rack> Racks { get; set; }
 
         //public override int SaveChanges()
