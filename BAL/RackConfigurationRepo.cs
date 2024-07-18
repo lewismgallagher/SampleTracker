@@ -18,11 +18,10 @@ namespace BAL
             _context = context;
         }
 
-
-
         public Task<int> SaveChanges()
         {
             Rack rack = new Rack() { RackName = "TestName", NumberOfRows = 5, NumberOfColumns = 10 };
+            _context.Racks.Add(rack);
             return _context.SaveChangesAsync();
         }
 

@@ -8,9 +8,11 @@ namespace DAL.Data.Interfaces
     public interface ISampleTrackerDbContext
     {
         DbSet<ApplicationUser> Users { get; set; }
+        DbSet<Rack> Racks { get; set; }
         DatabaseFacade Database { get; }
 
-         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        int SaveChanges();
 
     }
 }

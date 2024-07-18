@@ -1,4 +1,4 @@
-﻿@page "/RackConfiguration/RackConfigurationPage"
+﻿@page "/Pages/RackConfigurationPage"
 @rendermode InteractiveServer
 @using BAL
 @inject RackConfigurationRepo RackConfigurationRepo
@@ -9,6 +9,7 @@
 <h3>RackConfigurationPage</h3>
 
 <p>@InputValue</p>
+<button class="btn btn-primary" @onclick="Save">Click me</button>
 
 
 <input type="number" @onchange="OnChange" value="@InputValue" />
@@ -51,10 +52,10 @@
         InputValue = 0;
     }
 
-    // public async Task<int> Save()
-    // {
-    //   return await RackConfigurationRepo.SaveChanges();
-    // }
+    public async Task<int> Save()
+    {
+      return await RackConfigurationRepo.SaveChanges();
+    }
 
 
     private void OnChange(ChangeEventArgs e)

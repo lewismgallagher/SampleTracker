@@ -15,48 +15,48 @@ namespace DAL.Data
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Rack> Racks { get; set; }
 
-        //public override int SaveChanges()
-        //{
-        //    var entries = ChangeTracker
-        //        .Entries()
-        //        .Where(e => e.Entity is EntityBase && (
-        //                e.State == EntityState.Added
-        //                || e.State == EntityState.Modified));
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is EntityBase && (
+                        e.State == EntityState.Added
+                        || e.State == EntityState.Modified));
 
-        //    foreach (var entityEntry in entries)
-        //    {
-        //        ((EntityBase)entityEntry.Entity).ModifiedDateTime = DateTime.Now;
+            foreach (var entityEntry in entries)
+            {
+                ((EntityBase)entityEntry.Entity).ModifiedDateTime = DateTime.Now;
 
-        //        if (entityEntry.State == EntityState.Added)
-        //        {
-        //            ((EntityBase)entityEntry.Entity).CreatedDateTime = DateTime.Now;
-        //            ((EntityBase)entityEntry.Entity).Deleted = false;
-        //        }
-        //    }
+                if (entityEntry.State == EntityState.Added)
+                {
+                    ((EntityBase)entityEntry.Entity).CreatedDateTime = DateTime.Now;
+                    ((EntityBase)entityEntry.Entity).Deleted = false;
+                }
+            }
 
-        //    return base.SaveChanges();
-        //}
+            return base.SaveChanges();
+        }
 
-        //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        //{
-        //    var entries = ChangeTracker
-        //        .Entries()
-        //        .Where(e => e.Entity is EntityBase && (
-        //                e.State == EntityState.Added
-        //                || e.State == EntityState.Modified));
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is EntityBase && (
+                        e.State == EntityState.Added
+                        || e.State == EntityState.Modified));
 
-        //    foreach (var entityEntry in entries)
-        //    {
-        //        ((EntityBase)entityEntry.Entity).ModifiedDateTime = DateTime.Now;
+            foreach (var entityEntry in entries)
+            {
+                ((EntityBase)entityEntry.Entity).ModifiedDateTime = DateTime.Now;
 
-        //        if (entityEntry.State == EntityState.Added)
-        //        {
-        //            ((EntityBase)entityEntry.Entity).CreatedDateTime = DateTime.Now;
-        //            ((EntityBase)entityEntry.Entity).Deleted = false;
-        //        }
-        //    }
+                if (entityEntry.State == EntityState.Added)
+                {
+                    ((EntityBase)entityEntry.Entity).CreatedDateTime = DateTime.Now;
+                    ((EntityBase)entityEntry.Entity).Deleted = false;
+                }
+            }
 
-        //    return base.SaveChangesAsync();
-        //}
+            return base.SaveChangesAsync();
+        }
     }
 }
