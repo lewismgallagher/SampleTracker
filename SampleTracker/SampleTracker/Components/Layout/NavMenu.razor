@@ -1,20 +1,20 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">SampleTracker</a>
-    </div>
-</div>
+﻿@implements IDisposable
+@inject NavigationManager NavigationManager
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+<div onclick="document.querySelector('.navbar-toggler').click()">
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
+    <nav class=" sticky-top navbar navbar-expand-md navbar-dark bg-secondary ">
+        <div class="nav-item p-3">
+            <a class="h1 text-light" href="" aria-hidden="true"> $Brand</a>
+        </div>
+
+        <div class="nav-item p-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
+        <div class="nav-item p-3">
             <NavLink class="nav-link" href="counter">
                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
             </NavLink>
@@ -25,6 +25,38 @@
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Rack Configuration
             </NavLink>
         </div>
+
+        <div class="nav-item p-3">
+            <NavLink class="nav-link" href="auth">
+                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
+            </NavLink>
+        </div>
+        <div class="nav-item p-3">
+            <NavLink class="nav-link" href="/Samples/SampleRackPage">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> SampleRacks
+            </NavLink>
+        </div>
     </nav>
 </div>
 
+
+@code {
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}
