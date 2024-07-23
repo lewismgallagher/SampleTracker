@@ -1,11 +1,11 @@
 ﻿@implements IDisposable
 @inject NavigationManager NavigationManager
 
-<div onclick="document.querySelector('.navbar-toggler').click()">
 
-    <nav class=" sticky-top navbar navbar-expand-md navbar-dark bg-secondary ">
+
+    <nav class=" sticky-top navbar navbar-expand-md bg-secondary ">
         <div class="nav-item p-3">
-            <a class="h1 text-light" href="" aria-hidden="true"> $Brand</a>
+            <a class="h6" href="" aria-hidden="true"> Sample Tracker</a>
         </div>
 
         <div class="nav-item p-3">
@@ -15,70 +15,68 @@
         </div>
 
         <div class="nav-item p-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
             <NavLink class="nav-link" href="/Pages/Configuration/RackConfiguration">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Rack Configuration
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> RackConfiguration
             </NavLink>
         </div>
 
         <div class="nav-item p-3">
             <NavLink class="nav-link" href="auth">
-                <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
+                <span class="gg-lock ps-1" aria-hidden="true"></span> Auth Required
             </NavLink>
         </div>
-        <div class="nav-item p-3">
-            <NavLink class="nav-link" href="/Samples/SampleRackPage">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> SampleRacks
-            </NavLink>
-        </div>
-
+ 
         <AuthorizeView>
             <Authorized>
-                <div class="nav-item p-3 ">
+                    <div class="nav-item p-3 ms-auto">
                     <NavLink class="nav-link" href="Account/Manage">
-                        <span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name
+                        <span class="gg-profile" aria-hidden="true"></span> @context.User.Identity?.Name
                     </NavLink>
                 </div>
-                <div class="nav-item p-3">
+                    <div class="nav-item p-3 ">
                     <form action="Account/Logout" method="post">
                         <AntiforgeryToken />
                         <input type="hidden" name="ReturnUrl" value="@currentUrl" />
                         <button type="submit" class="nav-link">
-                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
+                            <span class="gg-log-out" aria-hidden="true"></span> Logout
                         </button>
                     </form>
                 </div>
             </Authorized>
             <NotAuthorized>
-                <div class="nav-item p-3">
+                    <div class="nav-item p-3 ms-auto ">
                     <NavLink class="nav-link" href="Account/Register">
-                        <span class="bi bi-person-nav-menu" aria-hidden="true"></span> Register
+                    <span class="gg-assign" aria-hidden="true"></span> Register
                     </NavLink>
                 </div>
-                <div class="nav-item p-3">
+                    <div class="nav-item p-3">
                     <NavLink class="nav-link" href="Account/Login">
-                        <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Login
+                        <span class="gg-log-in" aria-hidden="true"></span> Login
                     </NavLink>
                 </div>
             </NotAuthorized>
         </AuthorizeView>
 
+
     </nav>
-</div>
+
 
 
 @code {
+    public bool IsConfigDropdownVisible { get; set; } = false;
+
+
     private string? currentUrl;
 
     protected override void OnInitialized()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    public void ConfigDropDownClick()
+    {
+        IsConfigDropdownVisible = true;
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)

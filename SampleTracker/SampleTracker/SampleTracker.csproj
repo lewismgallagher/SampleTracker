@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\css\**" />
+    <Content Remove="wwwroot\css\**" />
+    <EmbeddedResource Remove="wwwroot\css\**" />
+    <None Remove="wwwroot\css\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\BAL\BAL.csproj" />
     <ProjectReference Include="..\..\DAL\DAL.csproj" />
     <ProjectReference Include="..\SampleTracker.Client\SampleTracker.Client.csproj" />
