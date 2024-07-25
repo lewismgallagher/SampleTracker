@@ -3,68 +3,81 @@
 
 
 
-    <nav class=" sticky-top navbar navbar-expand-md bg-secondary ">
-        <div class="nav-item p-3">
-            <a class="h6" href="" aria-hidden="true"> Sample Tracker</a>
+<nav class="  navbar navbar-expand-md bg-primary text-light">
+    <div class="nav-item p-3 ">
+        <label class="gg-adidas "></label>
+        <label class="  h6 ps-3">Sample Tracker</label>
+    </div>
+        <div class="nav-item p-3 dropdown">
+            <a class=" dropdown-toggle text-light nav-link" id="navbarDropdownMenuLink" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="gg-menu" aria-hidden="true"></span>
+                <label class=" ps-3">Config</label>
+            </a>
+            <ul class="dropdown-menu bg-primary " aria-labelledby="navbarDropdownMenuLink">
+            <li><NavLink class="dropdown-item text-light" href="/Pages/Configuration/RackConfiguration">RackConfig</NavLink></li>
+            <li><NavLink class="dropdown-item text-light" href="#">LocationConfig</NavLink></li>
+            </ul>
         </div>
 
-        <div class="nav-item p-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
 
-        <div class="nav-item p-3">
-            <NavLink class="nav-link" href="/Pages/Configuration/RackConfiguration">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> RackConfiguration
-            </NavLink>
-        </div>
+    <div class="nav-item p-3">
+        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <span class="gg-home text-light" aria-hidden="true"></span>
+            <label class=" ps-3 text-light">Home</label>
+        </NavLink>
+    </div>
 
-        <div class="nav-item p-3">
-            <NavLink class="nav-link" href="auth">
-                <span class="gg-lock ps-1" aria-hidden="true"></span> Auth Required
-            </NavLink>
-        </div>
- 
-        <AuthorizeView>
-            <Authorized>
-                    <div class="nav-item p-3 ms-auto">
-                    <NavLink class="nav-link" href="Account/Manage">
-                        <span class="gg-profile" aria-hidden="true"></span> @context.User.Identity?.Name
-                    </NavLink>
-                </div>
-                    <div class="nav-item p-3 ">
-                    <form action="Account/Logout" method="post">
-                        <AntiforgeryToken />
-                        <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                        <button type="submit" class="nav-link">
-                            <span class="gg-log-out" aria-hidden="true"></span> Logout
-                        </button>
-                    </form>
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                    <div class="nav-item p-3 ms-auto ">
-                    <NavLink class="nav-link" href="Account/Register">
-                    <span class="gg-assign" aria-hidden="true"></span> Register
-                    </NavLink>
-                </div>
-                    <div class="nav-item p-3">
-                    <NavLink class="nav-link" href="Account/Login">
-                        <span class="gg-log-in" aria-hidden="true"></span> Login
-                    </NavLink>
-                </div>
-            </NotAuthorized>
-        </AuthorizeView>
+    <div class="nav-item p-3">
+        <NavLink class="nav-link" href="auth">
+            <span class="gg-lock text-light" aria-hidden="true"></span>
+            <label class=" ps-3 text-light">Auth Required</label>
+        </NavLink>
+    </div>
+
+    <AuthorizeView>
+        <Authorized>
+            <div class="nav-item p-3 ms-auto">
+                <NavLink class="nav-link" href="Account/Manage">
+                    <span class="gg-profile text-light" aria-hidden="true"></span>
+                    <label class=" ps-3 text-light">@context.User.Identity?.Name</label>
+                </NavLink>
+            </div>
+            <div class="nav-item p-3 ">
+                <form action="Account/Logout" method="post">
+                    <AntiforgeryToken />
+                    <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                    <button type="submit" class="nav-link">
+                        <span class="gg-log-out text-light" aria-hidden="true"></span>
+                        <label class=" ps-3 text-light">Logout</label>
+                    </button>
+                </form>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div class="nav-item p-3 ms-auto ">
+                <NavLink class="nav-link " href="Account/Register">
+                    <span class="gg-assign text-light" aria-hidden="true"></span>
+                    <label class=" ps-3 text-light">Register</label>
+
+                </NavLink>
+            </div>
+            <div class="nav-item p-3">
+                <NavLink class="nav-link" href="Account/Login">
+                    <span class="gg-log-in text-light" aria-hidden="true"></span>
+                    <label class=" ps-3 text-light">Login</label>
+
+                </NavLink>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
 
 
-    </nav>
+</nav>
 
 
 
 @code {
-    public bool IsConfigDropdownVisible { get; set; } = false;
-
 
     private string? currentUrl;
 
@@ -72,11 +85,6 @@
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
-    }
-
-    public void ConfigDropDownClick()
-    {
-        IsConfigDropdownVisible = true;
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
