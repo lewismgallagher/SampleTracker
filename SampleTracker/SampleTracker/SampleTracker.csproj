@@ -77,12 +77,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="Components\Layout\NavMenuTop.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-  </ItemGroup>
-
 
 
 </Project>
