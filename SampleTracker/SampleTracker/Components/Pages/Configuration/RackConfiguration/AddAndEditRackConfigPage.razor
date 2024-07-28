@@ -1,0 +1,82 @@
+﻿@* @page "/Pages/Configuration/AddRackConfig"
+@page "/Pages/Configuration/EditRackConfig{Id}" *@
+
+@rendermode InteractiveServer
+@using BAL
+@using BAL.DTOs
+@inject RackConfigurationRepo RackConfigurationRepo
+
+<h3>Add / Edit Rack</h3>
+
+<div>
+    <div class="mb-3">
+        <label class="form-label">Id:</label>
+        <label class="form-label">@Rack.Id</label>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" @bind="Rack.RackName">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Rows</label>
+        <input type="number" class="form-control" @bind="Rack.NumberOfRows">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Columns</label>
+        <input type="number" class="form-control" @bind="Rack.NumberOfColumns">
+    </div>
+
+    <button class="btn btn-outline-success" @onclick="() => Finished.InvokeAsync()">Save</button>
+
+    @if (Rack.Id != 0)
+    {
+        <button class="btn btn-outline-danger" @onclick="Delete">Delete</button>
+    }
+
+</div>
+
+
+
+@code {
+    [Parameter]
+    public RackConfigurationDTO RackToEdit { get; set; }
+
+    [Parameter]
+    public EventCallback Finished { get; set; }
+
+
+    public RackConfigurationDTO Rack { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Rack = new RackConfigurationDTO();
+        if (RackToEdit != null) { Rack = RackToEdit; }
+
+    }
+
+    public async Task<int> SubmitAsync()
+    {
+        return await RackConfigurationRepo.SaveChanges(RackToEdit);
+    }
+
+    public async Task LoadRackAsync(int Id)
+    {
+        var rack = await RackConfigurationRepo.GetRack(Id);
+        RackToEdit = rack;
+    }
+
+    public async Task<int> Save()
+    {
+        return await RackConfigurationRepo.SaveChanges(RackToEdit);
+    }
+
+    public async Task<int> Delete()
+    {
+        return await RackConfigurationRepo.DeleteRack(RackToEdit.Id);
+    }
+
+}

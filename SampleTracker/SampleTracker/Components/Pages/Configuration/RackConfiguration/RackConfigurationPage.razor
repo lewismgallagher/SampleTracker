@@ -8,59 +8,98 @@
 <PageTitle>RackConfigurationPage</PageTitle>
 
 <h3>Rack Configuration</h3>
-
-    <div class="mb-3">
-        <label class="form-label">Id:</label>
-        <label class="form-label">@Rack.Id</label>
-    </div>
-
-    <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Name</label>
-        <input type="text" class="form-control" @bind="Rack.RackName">
-    </div>
-
-    <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Rows</label>
-        <input type="number" class="form-control" @bind="Rack.NumberOfRows">
-    </div>
-
-    <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Columns</label>
-        <input type="number" class="form-control" @bind="Rack.NumberOfColumns">
-    </div>
-
-    <button class="btn btn-outline-success" @onclick="Save">Save</button>
-
-    @if (Rack.Id != 0)
+@if (HasLoaded == true)
 {
-    <button class="btn btn-outline-danger" @onclick="Delete">Delete</button>
+    @if (EditMode == false)
+    {
+
+        <div class="">
+            <table class="table table-hover align-middle text-center ">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Cols</th>
+                        <th scope="col">Rows</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rack in Racks)
+                    {
+                        <tr>
+                            <th>@rack.Id</th>
+                            <td>@rack.RackName</td>
+                            <td>@rack.NumberOfColumns</td>
+                            <td>@rack.NumberOfRows</td>
+                            <td>
+                                <a class=" btn btn-outline-secondary" @onclick="() => EditRack(rack)">
+                                    Edit
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+
+        @if (EditMode == true)
+        {
+        <AddAndEditRackConfigPage RackToEdit="RackToEdit" Finished="FinishedEditing"></AddAndEditRackConfigPage>
+        }
+
 }
 
 @code {
+    public bool HasLoaded { get; set; } = false;
 
-    public RackConfigurationDTO Rack { get; set; }
+    public bool EditMode { get; set; } = false;
+
+    public RackConfigurationDTO EditedRack { get; set; }
+    public RackConfigurationDTO RackToEdit { get; set; }
+    public List<RackConfigurationDTO> Racks { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Rack = new RackConfigurationDTO();
-        Rack = await RackConfigurationRepo.GetRack(1);
-        
+        Racks = new List<RackConfigurationDTO>();
+        Racks = await RackConfigurationRepo.GetRacks();
+        EditedRack = new RackConfigurationDTO();
 
+        RackToEdit = new RackConfigurationDTO();
 
+        if (Racks != null) { HasLoaded = true; }
     }
     public async Task<int> SubmitAsync()
     {
-        return await RackConfigurationRepo.SaveChanges(Rack);
+        return await RackConfigurationRepo.SaveChanges(EditedRack);
+    }
+
+    public async Task LoadRackAsync(int Id)
+    {
+        var rack = await RackConfigurationRepo.GetRack(Id);
+        EditedRack = rack;
     }
 
     public async Task<int> Save()
     {
-        return await RackConfigurationRepo.SaveChanges(Rack);
+        return await RackConfigurationRepo.SaveChanges(EditedRack);
     }
 
     public async Task<int> Delete()
     {
-        return await RackConfigurationRepo.DeleteRack(Rack.Id);
+        return await RackConfigurationRepo.DeleteRack(EditedRack.Id);
+    }
+
+    public void EditRack(RackConfigurationDTO rack)
+    {
+        RackToEdit = rack;
+        EditMode = true;
+    }
+
+    private void FinishedEditing()
+    {
+        EditMode = false;
     }
 
 }
+
