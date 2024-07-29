@@ -33,7 +33,12 @@ namespace BAL
         {
             if (editedRack.Id == 0)
             {
-                Rack rack = new Rack() { RackName = "TestName", NumberOfRows = 5, NumberOfColumns = 10 };
+                Rack rack = new Rack()
+                {
+                    RackName = editedRack.RackName,
+                    NumberOfRows = editedRack.NumberOfRows,
+                    NumberOfColumns = 10
+                };
                 _context.Racks.Add(rack);
             }
             else

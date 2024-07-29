@@ -2,17 +2,34 @@
 @rendermode InteractiveServer
 @using BAL
 @using BAL.DTOs
+@using Global.Enums;
 @inject RackConfigurationRepo RackConfigurationRepo
 
 
 <PageTitle>RackConfigurationPage</PageTitle>
 
-<h3>Rack Configuration</h3>
+
 @if (HasLoaded == true)
 {
-    @if (EditMode == false)
+    @switch (_viewStatus)
+    {
+        case ConfigPageStatus.Viewing:
+            <h3 class="mb-3">Rack Configuration</h3>
+            break;
+        case ConfigPageStatus.Creating:
+            <h3 class="mb-3">Create New Rack</h3>
+            break;
+        case ConfigPageStatus.Editing:
+            <h3 class="mb-3">Edit Rack</h3>
+            break;
+    }
+
+    @if (_viewStatus == ConfigPageStatus.Viewing)
     {
 
+        <button class=" btn btn-outline-secondary" @onclick="CreateRack">
+            Create New Rack
+        </button>
         <div class="">
             <table class="table table-hover align-middle text-center ">
                 <thead>
@@ -32,9 +49,9 @@
                             <td>@rack.NumberOfColumns</td>
                             <td>@rack.NumberOfRows</td>
                             <td>
-                                <a class=" btn btn-outline-secondary" @onclick="() => EditRack(rack)">
+                                <button class=" btn btn-outline-secondary" @onclick="() => EditRack(rack)">
                                     Edit
-                                </a>
+                                </button>
                             </td>
                         </tr>
                     }
@@ -43,19 +60,52 @@
         </div>
         }
 
-        @if (EditMode == true)
+    @if (_viewStatus != ConfigPageStatus.Viewing)
         {
-        <AddAndEditRackConfigPage RackToEdit="RackToEdit" Finished="FinishedEditing"></AddAndEditRackConfigPage>
+        <button class=" btn btn-outline-secondary mb-3" @onclick="ReturnToViewMode">
+            Return To List
+        </button>
+
+        <div>
+            <div class="mb-3">
+                <label class="form-label">Id:</label>
+                <label class="form-label">@RackToEdit.Id</label>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" @bind="RackToEdit.RackName">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Rows</label>
+                <input type="number" class="form-control" @bind="RackToEdit.NumberOfRows">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Columns</label>
+                <input type="number" class="form-control" @bind="RackToEdit.NumberOfColumns">
+            </div>
+
+            <button class="btn btn-outline-success me-3" @onclick="Save">Save</button>
+
+            @if (_viewStatus == ConfigPageStatus.Editing)
+            {
+                <button class="btn btn-outline-danger" @onclick="Delete">Delete</button>
+            }
+
+        </div>
         }
 
 }
 
 @code {
+    private ConfigPageStatus _viewStatus;
+
     public bool HasLoaded { get; set; } = false;
 
-    public bool EditMode { get; set; } = false;
+    public bool InEditMode { get; set; } = false;
 
-    public RackConfigurationDTO EditedRack { get; set; }
     public RackConfigurationDTO RackToEdit { get; set; }
     public List<RackConfigurationDTO> Racks { get; set; }
 
@@ -63,42 +113,51 @@
     {
         Racks = new List<RackConfigurationDTO>();
         Racks = await RackConfigurationRepo.GetRacks();
-        EditedRack = new RackConfigurationDTO();
-
         RackToEdit = new RackConfigurationDTO();
 
+
         if (Racks != null) { HasLoaded = true; }
-    }
-    public async Task<int> SubmitAsync()
-    {
-        return await RackConfigurationRepo.SaveChanges(EditedRack);
+        _viewStatus = ConfigPageStatus.Viewing;
     }
 
-    public async Task LoadRackAsync(int Id)
+    public async Task Save()
     {
-        var rack = await RackConfigurationRepo.GetRack(Id);
-        EditedRack = rack;
+        int itemSaved = await RackConfigurationRepo.SaveChanges(RackToEdit);
+
+        if (itemSaved > 0)
+        {
+            Racks = await RackConfigurationRepo.GetRacks();
+            _viewStatus = ConfigPageStatus.Viewing;
+        }
     }
 
-    public async Task<int> Save()
+    public async Task Delete()
     {
-        return await RackConfigurationRepo.SaveChanges(EditedRack);
-    }
+        int itemSaved = await RackConfigurationRepo.DeleteRack(RackToEdit.Id);
 
-    public async Task<int> Delete()
-    {
-        return await RackConfigurationRepo.DeleteRack(EditedRack.Id);
+        if (itemSaved > 0)
+        {
+            Racks = await RackConfigurationRepo.GetRacks();
+            _viewStatus = ConfigPageStatus.Viewing;
+        }
     }
 
     public void EditRack(RackConfigurationDTO rack)
     {
         RackToEdit = rack;
-        EditMode = true;
+        _viewStatus = ConfigPageStatus.Editing;
     }
 
-    private void FinishedEditing()
+    public void CreateRack()
     {
-        EditMode = false;
+        RackToEdit = new RackConfigurationDTO();
+        _viewStatus = ConfigPageStatus.Creating;
+    }
+
+    public void ReturnToViewMode()
+    {
+        RackToEdit = new RackConfigurationDTO();
+        _viewStatus = ConfigPageStatus.Viewing;
     }
 
 }

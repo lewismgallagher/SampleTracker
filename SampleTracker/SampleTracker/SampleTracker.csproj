@@ -64,6 +64,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\BAL\BAL.csproj" />
     <ProjectReference Include="..\..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\..\Global\Global.csproj" />
     <ProjectReference Include="..\SampleTracker.Client\SampleTracker.Client.csproj" />
     <PackageReference Include="bootstrap" Version="5.3.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.7" />
