@@ -3,26 +3,41 @@
 @using BAL
 @using BAL.DTOs
 @using Global.Enums;
+@using SampleTracker.Components.CommonComponents;
 @inject RackConfigurationRepo RackConfigurationRepo
 
 
 <PageTitle>RackConfigurationPage</PageTitle>
 
-
-@if (HasLoaded == true)
+@switch (_viewStatus)
 {
-    @switch (_viewStatus)
-    {
-        case ConfigPageStatus.Viewing:
-            <h3 class="mb-3">Rack Configuration</h3>
-            break;
-        case ConfigPageStatus.Creating:
-            <h3 class="mb-3">Create New Rack</h3>
-            break;
-        case ConfigPageStatus.Editing:
-            <h3 class="mb-3">Edit Rack</h3>
-            break;
-    }
+    case ConfigPageStatus.Viewing:
+        <h3 class="mb-3">Rack Configuration</h3>
+        break;
+    case ConfigPageStatus.Creating:
+        <h3 class="mb-3">Create New Rack</h3>
+        break;
+    case ConfigPageStatus.Editing:
+        <h3 class="mb-3">Edit Rack</h3>
+        break;
+}
+
+@if (_showMessage)
+{
+    <AlertMessage CloseAlert="CloseAlert" AlertMessageType="_messageType" Reason="_messageReason"
+                  Show="@_showMessage"></AlertMessage>
+}
+
+
+
+@if(!HasLoaded)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+else
+{
 
     @if (_viewStatus == ConfigPageStatus.Viewing)
     {
@@ -101,6 +116,10 @@
 
 @code {
     private ConfigPageStatus _viewStatus;
+    private AlertMessageTypes _messageType;
+    private AlertMessageReason _messageReason;
+    private bool _showMessage;
+
 
     public bool HasLoaded { get; set; } = false;
 
@@ -111,35 +130,49 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _viewStatus = ConfigPageStatus.Viewing;
         Racks = new List<RackConfigurationDTO>();
-        Racks = await RackConfigurationRepo.GetRacks();
         RackToEdit = new RackConfigurationDTO();
 
+        Racks = await RackConfigurationRepo.GetRacks();
 
         if (Racks != null) { HasLoaded = true; }
-        _viewStatus = ConfigPageStatus.Viewing;
     }
 
     public async Task Save()
     {
-        int itemSaved = await RackConfigurationRepo.SaveChanges(RackToEdit);
+        bool itemSaved = await RackConfigurationRepo.SaveChangesAsync(RackToEdit);
 
-        if (itemSaved > 0)
+        if (itemSaved)
         {
             Racks = await RackConfigurationRepo.GetRacks();
             _viewStatus = ConfigPageStatus.Viewing;
+            _messageType = AlertMessageTypes.Success;
         }
+        else
+        {
+            _messageType = AlertMessageTypes.Error;
+        }
+        _messageReason = AlertMessageReason.Save;
+        _showMessage = true;
     }
 
     public async Task Delete()
     {
-        int itemSaved = await RackConfigurationRepo.DeleteRack(RackToEdit.Id);
+        bool itemSaved = await RackConfigurationRepo.DeleteRack(RackToEdit.Id);
 
-        if (itemSaved > 0)
+        if (itemSaved)
         {
             Racks = await RackConfigurationRepo.GetRacks();
             _viewStatus = ConfigPageStatus.Viewing;
+            _messageType = AlertMessageTypes.Success;
         }
+        else
+        {
+            _messageType = AlertMessageTypes.Error;
+        }
+        _messageReason = AlertMessageReason.Save;
+        _showMessage = true;
     }
 
     public void EditRack(RackConfigurationDTO rack)
@@ -158,6 +191,11 @@
     {
         RackToEdit = new RackConfigurationDTO();
         _viewStatus = ConfigPageStatus.Viewing;
+    }
+
+    public async Task CloseAlert()
+    {
+        _showMessage = false;
     }
 
 }

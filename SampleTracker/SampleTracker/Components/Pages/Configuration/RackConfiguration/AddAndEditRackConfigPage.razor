@@ -58,9 +58,9 @@
 
     }
 
-    public async Task<int> SubmitAsync()
+    public async Task<bool> SubmitAsync()
     {
-        return await RackConfigurationRepo.SaveChanges(RackToEdit);
+        return await RackConfigurationRepo.SaveChangesAsync(RackToEdit);
     }
 
     public async Task LoadRackAsync(int Id)
@@ -69,12 +69,12 @@
         RackToEdit = rack;
     }
 
-    public async Task<int> Save()
+    public async Task<bool> Save()
     {
-        return await RackConfigurationRepo.SaveChanges(RackToEdit);
+        return await RackConfigurationRepo.SaveChangesAsync(RackToEdit);
     }
 
-    public async Task<int> Delete()
+    public async Task<bool> Delete()
     {
         return await RackConfigurationRepo.DeleteRack(RackToEdit.Id);
     }

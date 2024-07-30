@@ -59,6 +59,7 @@
     <Content Remove="C:\Users\lewis\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.js.map" />
     <Content Remove="C:\Users\lewis\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js" />
     <Content Remove="C:\Users\lewis\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js.map" />
+    <Content Remove="Components\CommonComponents\PageAlertMessage.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,6 +77,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\CommonComponents\PageAlertMessage.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\CommonComponents\PageAlertMessage.razor" />
   </ItemGroup>
 
 

@@ -9,4 +9,16 @@
         Creating,
         Editing,
     }
+
+    public enum AlertMessageTypes
+    {
+        Success,
+        Error,
+    }
+
+    public enum AlertMessageReason
+    {
+        Save,
+        Load,
+    }
 }

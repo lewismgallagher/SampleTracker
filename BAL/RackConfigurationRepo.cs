@@ -29,7 +29,7 @@ namespace BAL
             return await _context.Racks.Where(r => r.Deleted != true).ToDTOs().ToListAsync();
         }
 
-        public async Task<int> SaveChanges(RackConfigurationDTO editedRack)
+        public async Task<bool> SaveChangesAsync(RackConfigurationDTO editedRack)
         {
             if (editedRack.Id == 0)
             {
@@ -49,16 +49,16 @@ namespace BAL
                 rackToEdit.NumberOfRows = editedRack.NumberOfRows;
             }
 
-            return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() >= 0;
         }
 
-        public async Task<int> DeleteRack(int Id)
+        public async Task<bool> DeleteRack(int Id)
         {
             Rack rackToDelete = await _context.Racks.FirstOrDefaultAsync(r => r.Id == Id);
 
             rackToDelete.Deleted = true;
 
-            return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() >= 0;
         }
 
     }

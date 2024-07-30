@@ -1,0 +1,46 @@
+﻿@rendermode InteractiveServer
+@using Global.Enums;
+
+
+@if (Show)
+{
+    <div class="@AlertCSS" role="alert">
+        <span class=" ">@Message</span>
+        <button class="btn-close ms-auto" @onclick="() => CloseAlert.InvokeAsync()"></button>
+    </div>
+}
+
+
+@code {
+
+    public string Message { get; set; }
+
+    [Parameter]
+    public AlertMessageTypes AlertMessageType { get; set; }
+    [Parameter]
+    public AlertMessageReason Reason { get; set; }
+
+    [Parameter]
+    public bool Show { get; set; }
+
+    [Parameter]
+    public EventCallback CloseAlert { get; set; }
+
+    public string AlertCSS { get; set; } 
+
+    protected override void OnInitialized()
+    {
+        if(AlertMessageType == AlertMessageTypes.Success)
+        {
+            AlertCSS = "alert alert-success alert-dismissible fade show";
+            if(Reason == AlertMessageReason.Save){ Message = "Saved Successfully"; }
+        }
+
+        if (AlertMessageType == AlertMessageTypes.Error)
+        {
+            AlertCSS = "alert alert-danger alert-dismissible fade show";
+            if (Reason == AlertMessageReason.Save) { Message = "Unknown Error Failed To Save"; }
+            if (Reason == AlertMessageReason.Load) { Message = "Unknown Error Failed To Load Data"; }
+        }
+    }
+}
