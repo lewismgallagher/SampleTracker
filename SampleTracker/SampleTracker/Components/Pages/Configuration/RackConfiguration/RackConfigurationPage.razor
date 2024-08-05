@@ -4,7 +4,7 @@
 @using BAL.DTOs
 @using Global.Enums;
 @using SampleTracker.Components.CommonComponents;
-@inject RackConfigurationRepo RackConfigurationRepo
+@inject RackConfigurationService RackConfigurationService
 
 
 <PageTitle>RackConfigurationPage</PageTitle>
@@ -27,8 +27,6 @@
     <AlertMessage CloseAlert="CloseAlert" AlertMessageType="_messageType" Reason="_messageReason"
                   Show="@_showMessage"></AlertMessage>
 }
-
-
 
 @if(!HasLoaded)
 {
@@ -134,18 +132,18 @@ else
         Racks = new List<RackConfigurationDTO>();
         RackToEdit = new RackConfigurationDTO();
 
-        Racks = await RackConfigurationRepo.GetRacks();
+        Racks = await RackConfigurationService.GetRacks();
 
         if (Racks != null) { HasLoaded = true; }
     }
 
     public async Task Save()
     {
-        bool itemSaved = await RackConfigurationRepo.SaveChangesAsync(RackToEdit);
+        bool itemSaved = await RackConfigurationService.SaveChangesAsync(RackToEdit);
 
         if (itemSaved)
         {
-            Racks = await RackConfigurationRepo.GetRacks();
+            Racks = await RackConfigurationService.GetRacks();
             _viewStatus = ConfigPageStatus.Viewing;
             _messageType = AlertMessageTypes.Success;
         }
@@ -159,11 +157,11 @@ else
 
     public async Task Delete()
     {
-        bool itemSaved = await RackConfigurationRepo.DeleteRack(RackToEdit.Id);
+        bool itemSaved = await RackConfigurationService.DeleteRack(RackToEdit.Id);
 
         if (itemSaved)
         {
-            Racks = await RackConfigurationRepo.GetRacks();
+            Racks = await RackConfigurationService.GetRacks();
             _viewStatus = ConfigPageStatus.Viewing;
             _messageType = AlertMessageTypes.Success;
         }

@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace BAL
 {
-    public class RackConfigurationRepo
+    public class RackConfigurationService
     {
         private readonly ISampleTrackerDbContext _context;
-        public RackConfigurationRepo(ISampleTrackerDbContext context)
+        public RackConfigurationService(ISampleTrackerDbContext context)
         {
             _context = context;
         }
