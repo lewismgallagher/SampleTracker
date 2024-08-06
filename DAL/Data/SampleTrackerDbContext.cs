@@ -12,8 +12,11 @@ namespace DAL.Data
         { 
         
         }
+
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Rack> Racks { get; set; }
+        public DbSet<SampleTypes> SampleTypes { get; set; }
+        public DbSet<Samples> Samples { get; set; }
 
         public override int SaveChanges()
         {
