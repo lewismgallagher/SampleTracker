@@ -28,7 +28,7 @@
                   Show="@_showMessage"></AlertMessage>
 }
 
-@if(!HasLoaded)
+@if (!HasLoaded)
 {
     <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -71,44 +71,50 @@ else
                 </tbody>
             </table>
         </div>
-        }
+    }
 
     @if (_viewStatus != ConfigPageStatus.Viewing)
-        {
+    {
         <button class=" btn btn-outline-secondary mb-3" @onclick="ReturnToViewMode">
             Return To List
         </button>
+        <EditForm Model="RackToEdit" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            <div>
+                <div class="mb-3">
+                    <label class="form-label">Id:</label>
+                    <label class="form-label">@RackToEdit.Id</label>
+                </div>
 
-        <div>
-            <div class="mb-3">
-                <label class="form-label">Id:</label>
-                <label class="form-label">@RackToEdit.Id</label>
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <InputText type="text" class="form-control" @bind-Value="RackToEdit.RackName" />
+                    <ValidationMessage For="@(() => RackToEdit.RackName)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Rows</label>
+                    <InputNumber type="number" class="form-control" @bind-Value="RackToEdit.NumberOfRows" />
+                    <ValidationMessage For="@(() => RackToEdit.NumberOfRows)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Columns</label>
+                    <InputNumber type="number" class="form-control" @bind-Value="RackToEdit.NumberOfColumns" />
+                    <ValidationMessage For="@(() => RackToEdit.NumberOfColumns)" />
+                </div>
+
+                <button type="submit" class="btn btn-outline-success me-3" @onclick="Submit">Save</button>
+
+                @if (_viewStatus == ConfigPageStatus.Editing)
+                {
+                    <button type="button" class="btn btn-outline-danger" @onclick="Delete">Delete</button>
+                }
+
             </div>
+        </EditForm>
 
-            <div class="mb-3">
-                <label class="form-label">Name</label>
-                <input type="text" class="form-control" @bind="RackToEdit.RackName">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Rows</label>
-                <input type="number" class="form-control" @bind="RackToEdit.NumberOfRows">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Columns</label>
-                <input type="number" class="form-control" @bind="RackToEdit.NumberOfColumns">
-            </div>
-
-            <button class="btn btn-outline-success me-3" @onclick="Save">Save</button>
-
-            @if (_viewStatus == ConfigPageStatus.Editing)
-            {
-                <button class="btn btn-outline-danger" @onclick="Delete">Delete</button>
-            }
-
-        </div>
-        }
+    }
 
 }
 
@@ -117,7 +123,7 @@ else
     private AlertMessageTypes _messageType;
     private AlertMessageReason _messageReason;
     private bool _showMessage;
-
+    private EditContext _editContext;
 
     public bool HasLoaded { get; set; } = false;
 
@@ -131,10 +137,17 @@ else
         _viewStatus = ConfigPageStatus.Viewing;
         Racks = new List<RackConfigurationDTO>();
         RackToEdit = new RackConfigurationDTO();
+        _editContext = new EditContext(RackToEdit);
 
         Racks = await RackConfigurationService.GetRacks();
 
         if (Racks != null) { HasLoaded = true; }
+    }
+
+    // TODO Implement this so it isn't just for triggering client side validation.
+
+    public void Submit()
+    {
     }
 
     public async Task Save()
@@ -169,7 +182,7 @@ else
         {
             _messageType = AlertMessageTypes.Error;
         }
-        _messageReason = AlertMessageReason.Save;
+        _messageReason = AlertMessageReason.Delete;
         _showMessage = true;
     }
 

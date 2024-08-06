@@ -9,7 +9,6 @@ namespace DAL.Data.Interfaces
     {
         DbSet<ApplicationUser> Users { get; set; }
         DbSet<Rack> Racks { get; set; }
-        DatabaseFacade Database { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         int SaveChanges();

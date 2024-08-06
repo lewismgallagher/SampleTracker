@@ -33,13 +33,15 @@
         if(AlertMessageType == AlertMessageTypes.Success)
         {
             AlertCSS = "alert alert-success alert-dismissible fade show";
-            if(Reason == AlertMessageReason.Save){ Message = "Saved Successfully"; }
+            if (Reason == AlertMessageReason.Save) { Message = "Saved Successfully"; }
+            if (Reason == AlertMessageReason.Delete) { Message = "Deleted Successfully"; }
         }
 
         if (AlertMessageType == AlertMessageTypes.Error)
         {
             AlertCSS = "alert alert-danger alert-dismissible fade show";
             if (Reason == AlertMessageReason.Save) { Message = "Unknown Error Failed To Save"; }
+            if (Reason == AlertMessageReason.Delete) { Message = "Unknown Error Failed To Delete"; }
             if (Reason == AlertMessageReason.Load) { Message = "Unknown Error Failed To Load Data"; }
         }
     }

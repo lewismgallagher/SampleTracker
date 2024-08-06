@@ -20,5 +20,6 @@
     {
         Save,
         Load,
+        Delete
     }
 }
