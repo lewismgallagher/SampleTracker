@@ -20,10 +20,18 @@ namespace BAL
         }
         public async Task<List<SampleRackDTO>> GetRacks()
         {
-            return await _context.Racks.Include(r => r.Samples.Select(s => s.SampleType))
-                .Where(r => r.Deleted != true).ToSampleRackDTOs().ToListAsync();
+            return await _context.Racks.Where(r => r.Deleted != true).ToSampleRackDTOs().ToListAsync();
         }
 
+        public async Task<List<SampleRackDTO>> SearchRacks(int? id, string name)
+        {
+            var query = _context.Racks.Where(r => r.Deleted != true);
+
+            if(id != null) query = query.Where(r => r.Id == id); 
+            if(!string.IsNullOrWhiteSpace(name)) query = query.Where(r => r.RackName.Contains(name));
+
+            return await query.ToSampleRackDTOs().ToListAsync();
+        }
 
         public async Task<SampleRackDTO> GetRack(int id)
         {

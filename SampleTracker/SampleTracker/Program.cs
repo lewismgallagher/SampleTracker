@@ -43,6 +43,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 builder.Services.AddScoped<RackConfigurationService, RackConfigurationService>();
 builder.Services.AddScoped<SampleTypeConfigurationService, SampleTypeConfigurationService>();
+builder.Services.AddScoped<SampleRackService, SampleRackService>();
 
 
 var app = builder.Build();
