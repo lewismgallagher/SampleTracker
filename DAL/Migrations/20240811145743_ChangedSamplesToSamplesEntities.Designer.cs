@@ -4,6 +4,7 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(SampleTrackerDbContext))]
-    partial class SampleTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240811145743_ChangedSamplesToSamplesEntities")]
+    partial class ChangedSamplesToSamplesEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,7 +155,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("SampleTypeId");
 
-                    b.ToTable("Samples");
+                    b.ToTable("Sample");
                 });
 
             modelBuilder.Entity("DAL.Data.Entities.SampleType", b =>
@@ -182,7 +185,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SampleTypes");
+                    b.ToTable("SampleType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

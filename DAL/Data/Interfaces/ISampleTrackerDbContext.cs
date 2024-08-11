@@ -9,8 +9,8 @@ namespace DAL.Data.Interfaces
     {
         DbSet<ApplicationUser> Users { get; set; }
         DbSet<Rack> Racks { get; set; }
-        DbSet<SampleTypes> SampleTypes { get; set; }
-        DbSet<Samples> Samples { get; set; }
+        DbSet<SampleType> SampleTypes { get; set; }
+        DbSet<Sample> Samples { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         int SaveChanges();

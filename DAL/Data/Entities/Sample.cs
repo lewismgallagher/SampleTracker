@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Data.Entities
 {
-    public class Samples : EntityBase
+    public class Sample : EntityBase
     {
         public string IdentifyingValue { get; set; }
 
-        public SampleTypes SampleType { get; set; }
+        public SampleType SampleType { get; set; }
         public int SampleTypeId { get; set; }
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Data.Entities
 {
-    public class SampleTypes : EntityBase
+    public class SampleType : EntityBase
     {
         public string Name { get; set; }
 

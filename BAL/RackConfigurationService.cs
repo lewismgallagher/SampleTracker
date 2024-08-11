@@ -37,7 +37,7 @@ namespace BAL
                 {
                     RackName = editedRack.RackName,
                     NumberOfRows = editedRack.NumberOfRows,
-                    NumberOfColumns = 10
+                    NumberOfColumns = editedRack.NumberOfColumns
                 };
                 _context.Racks.Add(rack);
             }

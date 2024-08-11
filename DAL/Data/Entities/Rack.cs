@@ -13,7 +13,7 @@ namespace DAL.Data.Entities
         public int NumberOfRows { get; set; }
         public int NumberOfColumns { get; set; }
 
-        public ICollection<Samples> Samples { get; set; }
+        public ICollection<Sample> Samples { get; set; }
 
     }
 }
