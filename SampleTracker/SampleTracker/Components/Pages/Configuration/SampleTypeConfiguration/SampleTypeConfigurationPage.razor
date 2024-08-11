@@ -1,5 +1,113 @@
-﻿<h3>SampleTypeConfigurationPage</h3>
+﻿@page "/Pages/Configuration/SampleTypeConfiguration"
+@rendermode InteractiveServer
+@using BAL
+@using BAL.DTOs
+@using Global.Enums;
+@using SampleTracker.Components.CommonComponents;
+@inject SampleTypeConfigurationService SampleTypeConfigurationService
 
-@code {
+<PageTitle>RackConfigurationPage</PageTitle>
+
+
+@switch (_viewStatus)
+{
+    case ConfigPageStatus.Viewing:
+        <h3 class="mb-3">SampleType Configuration</h3>
+        break;
+    case ConfigPageStatus.Creating:
+        <h3 class="mb-3">Create New SampleType</h3>
+        break;
+    case ConfigPageStatus.Editing:
+        <h3 class="mb-3">Edit SampleType</h3>
+        break;
+}
+
+@if (_showMessage)
+{
+    <AlertMessage CloseAlert="CloseAlert" AlertMessageType="_messageType" Reason="_messageReason"
+                  Show="@_showMessage"></AlertMessage>
+}
+
+@if (!HasLoaded)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+else
+{
+
+    @if (_viewStatus == ConfigPageStatus.Viewing)
+    {
+
+        <button class=" btn btn-outline-secondary" @onclick="CreateSampleType">
+            Create New SampleType
+        </button>
+        <div class="">
+            <table class="table table-hover align-middle text-center ">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var sampleType in SampleTypes)
+                    {
+                        <tr>
+                            <th>@sampleType.Id</th>
+                            <td>@sampleType.Name</td>
+                            <td>@sampleType.Description</td>
+                            <td>
+                                <button class=" btn btn-outline-secondary" @onclick="() => EditSampleType(sampleType)">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    @if (_viewStatus != ConfigPageStatus.Viewing)
+    {
+        <button class=" btn btn-outline-secondary mb-3" @onclick="ReturnToViewMode">
+            Return To List
+        </button>
+        <EditForm Model="SampleTypeToEdit" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            <div>
+                <div class="mb-3">
+                    <label class="form-label">Id:</label>
+                    <label class="form-label">@SampleTypeToEdit.Id</label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <InputText type="text" class="form-control" @bind-Value="SampleTypeToEdit.Name" />
+                    <ValidationMessage For="@(() => SampleTypeToEdit.Name)" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <InputText type="text" class="form-control" @bind-Value="SampleTypeToEdit.Description" />
+                    <ValidationMessage For="@(() => SampleTypeToEdit.Description)" />
+                </div>
+
+
+                <button type="submit" class="btn btn-outline-success me-3" @onclick="Submit">Save</button>
+
+                @if (_viewStatus == ConfigPageStatus.Editing)
+                {
+                    <button type="button" class="btn btn-outline-danger" @onclick="Delete">Delete</button>
+                }
+
+            </div>
+        </EditForm>
+
+    }
 
 }

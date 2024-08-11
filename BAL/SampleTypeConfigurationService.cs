@@ -32,16 +32,16 @@ namespace BAL
         {
             if (editedSampleType.Id == 0)
             {
-                SampleType rack = new SampleType()
+                SampleType sample = new SampleType()
                 {
                     Name = editedSampleType.Name,
                     Description = editedSampleType.Description,
                 };
-                _context.SampleTypes.Add(rack);
+                _context.SampleTypes.Add(sample);
             }
             else
             {
-                var sampleTypeToEdit = await _context.SampleTypes.FirstOrDefaultAsync();
+                var sampleTypeToEdit = await _context.SampleTypes.FirstOrDefaultAsync(s => s.Id == editedSampleType.Id);
                 sampleTypeToEdit.Name = editedSampleType.Name;
                 sampleTypeToEdit.Description = editedSampleType.Description;
             }

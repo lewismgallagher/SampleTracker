@@ -43,7 +43,7 @@ namespace BAL
             }
             else
             {
-                var rackToEdit = await _context.Racks.FirstOrDefaultAsync();
+                var rackToEdit = await _context.Racks.FirstOrDefaultAsync(r => r.Id == editedRack.Id);
                 rackToEdit.RackName = editedRack.RackName;
                 rackToEdit.NumberOfColumns = editedRack.NumberOfColumns;
                 rackToEdit.NumberOfRows = editedRack.NumberOfRows;
