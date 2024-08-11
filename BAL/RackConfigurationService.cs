@@ -21,12 +21,12 @@ namespace BAL
 
         public async Task<RackConfigurationDTO> GetRack(int id)
         {
-            return await _context.Racks.ToDTOs().FirstOrDefaultAsync(r => r.Id == id);
+            return await _context.Racks.ToRackConfigurationDTOs().FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<List<RackConfigurationDTO>> GetRacks()
         {
-            return await _context.Racks.Where(r => r.Deleted != true).ToDTOs().ToListAsync();
+            return await _context.Racks.Where(r => r.Deleted != true).ToRackConfigurationDTOs().ToListAsync();
         }
 
         public async Task<bool> SaveChangesAsync(RackConfigurationDTO editedRack)

@@ -10,7 +10,7 @@ namespace BAL.DTOs
 {
     public static class SampleTypeConfigurationDTOExtensions
     {
-        public static IQueryable<SampleTypeConfigurationDTO> ToDTOs(this IQueryable<SampleType> source)
+        public static IQueryable<SampleTypeConfigurationDTO> ToSampleTypeConfigurationDTOs(this IQueryable<SampleType> source)
         {
             return source.Select(s => new SampleTypeConfigurationDTO
             {
@@ -20,7 +20,7 @@ namespace BAL.DTOs
             });
         }
 
-        public static SampleTypeConfigurationDTO ToDTO(SampleType sampleType)
+        public static SampleTypeConfigurationDTO ToSampleTypeConfigurationDTO(SampleType sampleType)
         {
             return new SampleTypeConfigurationDTO()
             {

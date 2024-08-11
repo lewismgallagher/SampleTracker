@@ -1,0 +1,69 @@
+﻿using BAL.DTOs;
+using DAL.Data.Entities;
+using DAL.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BAL
+{
+    public class SampleRackService
+    {
+
+        private readonly ISampleTrackerDbContext _context;
+        public SampleRackService(ISampleTrackerDbContext context)
+        {
+            _context = context;
+        }
+        public async Task<List<SampleRackDTO>> GetRacks()
+        {
+            return await _context.Racks.Include(r => r.Samples.Select(s => s.SampleType))
+                .Where(r => r.Deleted != true).ToSampleRackDTOs().ToListAsync();
+        }
+
+
+        public async Task<SampleRackDTO> GetRack(int id)
+        {
+            return await _context.Racks.Include(r => r.Samples.Select(s => s.SampleType))
+                .ToSampleRackDTOs().FirstOrDefaultAsync(r => r.RackId == id);
+        }
+
+        public async Task<bool> SaveChangesAsync(SampleDTO editedSample)
+        {
+            if (editedSample.Id == 0)
+            {
+                Sample sample = new Sample()
+                {
+                    IdentifyingValue = editedSample.IdentifyingValue,
+                    RowNumber = editedSample.RowNumber,
+                    ColumnNumber = editedSample.ColumnNumber,
+                    SampleTypeId = editedSample.SampleTypeId
+                };
+                _context.Samples.Add(sample);
+            }
+            else
+            {
+                var sampleToEdit = await _context.Samples.FirstOrDefaultAsync(s => s.Id == editedSample.Id);
+                sampleToEdit.IdentifyingValue = editedSample.IdentifyingValue;
+                sampleToEdit.RowNumber = editedSample.RowNumber;
+                sampleToEdit.ColumnNumber = editedSample.ColumnNumber;
+            }
+
+            return await _context.SaveChangesAsync() >= 0;
+        }
+
+        public async Task<bool> DeleteSample(int Id)
+        {
+            Sample sampleToDelete = await _context.Samples.FirstOrDefaultAsync(s => s.Id == Id);
+
+            sampleToDelete.Deleted = true;
+
+            return await _context.SaveChangesAsync() >= 0;
+        }
+
+
+    }
+}

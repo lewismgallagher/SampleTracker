@@ -10,7 +10,7 @@ namespace BAL.DTOs
 {
     public static class RackConfigurationDTOExtensions
     {
-        public static IQueryable<RackConfigurationDTO> ToDTOs(this IQueryable<Rack> source)
+        public static IQueryable<RackConfigurationDTO> ToRackConfigurationDTOs(this IQueryable<Rack> source)
         {
             return source.Select(r => new RackConfigurationDTO
             {
@@ -21,7 +21,7 @@ namespace BAL.DTOs
             });
         }
 
-        public static RackConfigurationDTO ToDTO(Rack rack)
+        public static RackConfigurationDTO ToRackConfigurationDTO(Rack rack)
         {
             return new RackConfigurationDTO()
             {

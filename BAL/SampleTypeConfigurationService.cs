@@ -20,12 +20,12 @@ namespace BAL
 
         public async Task<SampleTypeConfigurationDTO> GetSampleType(int id)
         {
-            return await _context.SampleTypes.ToDTOs().FirstOrDefaultAsync(r => r.Id == id);
+            return await _context.SampleTypes.ToSampleTypeConfigurationDTOs().FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<List<SampleTypeConfigurationDTO>> GetSampleTypes()
         {
-            return await _context.SampleTypes.Where(r => r.Deleted != true).ToDTOs().ToListAsync();
+            return await _context.SampleTypes.Where(r => r.Deleted != true).ToSampleTypeConfigurationDTOs().ToListAsync();
         }
 
         public async Task<bool> SaveChangesAsync(SampleTypeConfigurationDTO editedSampleType)
