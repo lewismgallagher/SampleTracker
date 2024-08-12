@@ -12,6 +12,7 @@ namespace DAL.Data.Entities
 
         public SampleType SampleType { get; set; }
         public int SampleTypeId { get; set; }
+        public int RackId { get; set; }
         public int RowNumber { get; set; }
         public int ColumnNumber { get; set; }
 

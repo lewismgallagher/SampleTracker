@@ -20,15 +20,6 @@ namespace BAL.DTOs
             });
         }
 
-        public static SampleTypeConfigurationDTO ToSampleTypeConfigurationDTO(SampleType sampleType)
-        {
-            return new SampleTypeConfigurationDTO()
-            {
-                Id = sampleType.Id,
-                Name = sampleType.Name,
-                Description = sampleType.Description,
-            };
-        }
     }
     public class SampleTypeConfigurationDTO
     {

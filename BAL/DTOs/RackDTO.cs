@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace BAL.DTOs
 {
-    public static class RackConfigurationDTOExtensions
+    public static class RackDTOExtensions
     {
-        public static IQueryable<RackConfigurationDTO> ToRackConfigurationDTOs(this IQueryable<Rack> source)
+        public static IQueryable<RackDTO> ToRackDTOs(this IQueryable<Rack> source)
         {
-            return source.Select(r => new RackConfigurationDTO
+            return source.Select(r => new RackDTO
             {
                 Id = r.Id,
                 RackName = r.RackName,
@@ -21,8 +21,18 @@ namespace BAL.DTOs
             });
         }
 
+        public static RackDTO ToRackDTO(Rack rack)
+        {
+            return new RackDTO()
+            {
+                Id = rack.Id,
+                RackName = rack.RackName,
+                NumberOfColumns = rack.NumberOfColumns,
+                NumberOfRows = rack.NumberOfRows,
+            };
+        }
     }
-    public class RackConfigurationDTO
+    public class RackDTO
     {
         public int Id { get; set; }
         

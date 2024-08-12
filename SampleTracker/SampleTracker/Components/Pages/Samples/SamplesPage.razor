@@ -8,6 +8,58 @@
 @inject SampleRackService SampleRackService
 @inject NavigationManager NavigationManager
 
-<h3>SamplesPage @RackId </h3>
- 
 
+ 
+@if (!HasLoaded)
+{
+    <h3>SamplesPage @RackId </h3>
+
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+else
+{
+    <h3>SamplesPage @RackId  @Rack.RackName</h3>
+
+
+    <div class="">
+        <table class="table table-hover align-middle text-center ">
+            <thead>
+
+
+
+                    <tr>
+                    <th scope="col"></th>
+
+                        @for (int i = 1; i < Rack.NumberOfColumns + 1; i++)
+                    {
+                        <th scope="col">@i</th>
+                    }
+                    </tr>
+                
+
+            </thead>
+            <tbody>
+                @for (int r = 1; r < Rack.NumberOfRows + 1; r++)
+                {
+                <tr>
+                        <th scope="row">@r</th>
+                    @for (int c = 1; c < Rack.NumberOfColumns + 1; c++)
+                        {
+                            <th scope="row">
+                                
+                                <SampleTextBox SampleToEdit="Samples.
+                                    FirstOrDefault(s => s.ColumnNumber == c && s.RowNumber == r)"></SampleTextBox>
+                            </th>
+                        }
+                    
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+
+}

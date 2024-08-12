@@ -1,0 +1,27 @@
+﻿@rendermode InteractiveServer
+@using BAL;
+@using BAL.DTOs;
+@using Global.Enums;
+@using SampleTracker.Components.CommonComponents;
+
+
+<div class="mb-3">
+    <InputText type="text" class="form-control" @bind-Value="Sample.IdentifyingValue" />
+</div>
+
+@code {
+    [Parameter]
+    public SampleDTO SampleToEdit { get; set; }
+
+    public SampleDTO Sample { get; set; }
+    [Parameter]
+    public SampleTypeDTO SampleType { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        Sample = new SampleDTO();
+        SampleType = new SampleTypeDTO();
+       
+        if (SampleToEdit != null) { Sample = SampleToEdit; }
+    }
+}

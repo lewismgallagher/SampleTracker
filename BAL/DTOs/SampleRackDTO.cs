@@ -18,22 +18,10 @@ namespace BAL.DTOs
                 RackName = r.RackName,
                 NumberOfRows = r.NumberOfRows,
                 NumberOfColumns = r.NumberOfColumns,
-                Samples = r.Samples.ToSampleDTOList()
             });
             
         }
 
-        //public static SampleRackDTO ToSampleRackDTO(Rack rack)
-        //{
-        //    return new SampleRackDTO()
-        //    {
-        //        RackId = rack.Id,
-        //        RackName = rack.RackName,
-        //        NumberOfRows = rack.NumberOfRows,
-        //        NumberOfColumns = rack.NumberOfColumns,
-        //        Samples = rack.Samples.ToSampleDTOList()
-        //    };
-        //}
     }
 
     public class SampleRackDTO
@@ -44,6 +32,5 @@ namespace BAL.DTOs
         public int NumberOfRows { get; set; }
         public int NumberOfColumns { get; set; }
 
-        public ICollection<SampleDTO> Samples { get; set;}
     }
 }

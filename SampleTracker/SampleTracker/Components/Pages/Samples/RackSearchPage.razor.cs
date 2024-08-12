@@ -14,13 +14,11 @@ namespace SampleTracker.Components.Pages.Samples
 
         public string Url { get; set; } = "/Pages/Samples/";
 
-        public SampleRackDTO RackToEdit { get; set; }
-        public List<SampleRackDTO> Racks { get; set; }
+        public List<RackDTO> Racks { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            Racks = new List<SampleRackDTO>();
-            RackToEdit = new SampleRackDTO();
+            Racks = new List<RackDTO>();
         }
 
         public async Task SearchRacks()

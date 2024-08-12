@@ -13,17 +13,17 @@
 <h3 class="mb-3">Search Rack</h3>
 
 
-<div class="mb-3">
+<div class="mb-3 col-6">
     <label class="form-label">Rack Name</label>
     <InputText type="text" class="form-control" @bind-Value="RackName" />
 </div>
 
-<div class="mb-3">
+<div class="mb-3 col-6">
     <label class="form-label">Rack Id</label>
     <InputNumber type="number" class="form-control" @bind-Value="RackId" />
 </div>
 
-<button type="button" class="btn btn-outline-secondary" @onclick="SearchRacks">Search</button>
+<button type="button" class=" mb-3 btn btn-outline-secondary" @onclick="SearchRacks">Search</button>
 
 
 @if (!HasLoaded && IsSearching)
@@ -48,12 +48,12 @@
                 @foreach (var rack in Racks)
                 {
                     <tr>
-                        <th>@rack.RackId</th>
+                        <th>@rack.Id</th>
                         <td>@rack.RackName</td>
                         <td>@rack.NumberOfColumns</td>
                         <td>@rack.NumberOfRows</td>
                         <td>
-                            <button class=" btn btn-outline-secondary" @onclick="() => NavigationManager.NavigateTo(Url + rack.RackId)">
+                            <button class=" btn btn-outline-secondary" @onclick="() => NavigationManager.NavigateTo(Url + rack.Id)">
                                 Edit
                             </button>
                         </td>

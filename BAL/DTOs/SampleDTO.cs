@@ -23,37 +23,24 @@ namespace BAL.DTOs
             });
         }
 
-        public static ICollection<SampleDTO> ToSampleDTOList(this ICollection<Sample> source)
-        {
-            return source.Select(s => new SampleDTO
-            {
-                Id = s.Id,
-                IdentifyingValue = s.IdentifyingValue,
-                RowNumber = s.RowNumber,
-                ColumnNumber = s.ColumnNumber,
-                SampleType = s.SampleType.Name,
-                SampleTypeId = s.SampleTypeId
-            }).ToList();
-        }
-
-        //public static SampleDTO ToSampleDTO(Sample sample)
+        //public static IQueryable<SampleDTO> ToSampleDTOList(this IQueryable<Sample> source)
         //{
-        //    return new SampleDTO()
+        //    return source.Select(s => new SampleDTO
         //    {
-        //        Id = sample.Id,
-        //        IdentifyingValue = sample.IdentifyingValue,
-        //        RowNumber = sample.RowNumber,
-        //        ColumnNumber = sample.ColumnNumber,
-        //        SampleType = sample.SampleType.Name,
-        //        SampleTypeId = sample.SampleTypeId
-        //    };
+        //        Id = s.Id,
+        //        IdentifyingValue = s.IdentifyingValue,
+        //        RowNumber = s.RowNumber,
+        //        ColumnNumber = s.ColumnNumber,
+        //        SampleType = s.SampleType.Name,
+        //        SampleTypeId = s.SampleTypeId
+        //    });
         //}
     }
 
     public class SampleDTO
     {
         public int Id { get; set; }
-        public int SampleTypeId { get; set; }
+        public int? SampleTypeId { get; set; }
         public string IdentifyingValue { get; set; }
         public int RowNumber { get; set; }
         public int ColumnNumber { get; set; }
