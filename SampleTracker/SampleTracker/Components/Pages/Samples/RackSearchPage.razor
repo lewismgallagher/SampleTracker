@@ -1,10 +1,11 @@
 ﻿@page "/Pages/Samples/Racks"
 @rendermode InteractiveServer
-@using BAL
-@using BAL.DTOs
+@using BAL;
+@using BAL.DTOs;
 @using Global.Enums;
 @using SampleTracker.Components.CommonComponents;
 @inject SampleRackService SampleRackService
+@inject NavigationManager NavigationManager
 
 
 <PageTitle>RackConfigurationPage</PageTitle>
@@ -52,7 +53,7 @@
                         <td>@rack.NumberOfColumns</td>
                         <td>@rack.NumberOfRows</td>
                         <td>
-                            <button class=" btn btn-outline-secondary" @onclick="() => ViewRack(rack)">
+                            <button class=" btn btn-outline-secondary" @onclick="() => NavigationManager.NavigateTo(Url + rack.RackId)">
                                 Edit
                             </button>
                         </td>
@@ -69,3 +70,5 @@
 }
 
 
+@code{
+}

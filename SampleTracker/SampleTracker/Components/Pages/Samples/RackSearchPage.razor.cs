@@ -12,6 +12,7 @@ namespace SampleTracker.Components.Pages.Samples
         public string RackName { get; set; } = "";
         public int? RackId { get; set; }
 
+        public string Url { get; set; } = "/Pages/Samples/";
 
         public SampleRackDTO RackToEdit { get; set; }
         public List<SampleRackDTO> Racks { get; set; }
@@ -31,10 +32,6 @@ namespace SampleTracker.Components.Pages.Samples
             HasLoaded = true;
         }
 
-        public async Task ViewRack(SampleRackDTO rack)
-        {
-            // TODO take to next page
-        }
 
     }
 }

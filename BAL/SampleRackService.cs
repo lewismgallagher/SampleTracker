@@ -39,6 +39,12 @@ namespace BAL
                 .ToSampleRackDTOs().FirstOrDefaultAsync(r => r.RackId == id);
         }
 
+        public async Task<SampleTypeConfigurationDTO> GetSampleTypes()
+        {
+            return await _context.Racks.Include(r => r.Samples.Select(s => s.SampleType))
+                .ToSampleRackDTOs().FirstOrDefaultAsync(r => r.RackId == id);
+        }
+
         public async Task<bool> SaveChangesAsync(SampleDTO editedSample)
         {
             if (editedSample.Id == 0)
