@@ -22,6 +22,15 @@ else
 {
     <h3>SamplesPage @RackId  @Rack.RackName</h3>
 
+    <select @bind="SelectedSampleTypeId"  @bind:after="ChangeSampleType">
+        <option value="0"> Sample Type</option>
+
+        @foreach (var st in SampleTypes)
+        {
+            <option value="@st.Id"> @st.Name</option>
+        }
+
+    </select>
 
     <div class="">
         <table class="table table-hover align-middle text-center ">
@@ -48,9 +57,16 @@ else
                     @for (int c = 1; c < Rack.NumberOfColumns + 1; c++)
                         {
                             <th scope="row">
-                                
-                                <SampleTextBox SampleToEdit="Samples.
-                                    FirstOrDefault(s => s.ColumnNumber == c && s.RowNumber == r)"></SampleTextBox>
+                                @if (CheckSampleExistsInRack(c, r))
+                                {
+                                    <SampleTextBox SampleToEdit="GetSample(c,r)" 
+                                    SampleType="GetSampleTypeFromExistingSample(GetSample(c,r).SampleTypeId ?? 0)"></SampleTextBox>
+                                }
+                                else
+                                {
+                                    <SampleTextBox SampleToEdit="CreateEmptySample(c,r)" 
+                                    SampleType="SelectedSampleType" ></SampleTextBox>
+                                }
                             </th>
                         }
                     

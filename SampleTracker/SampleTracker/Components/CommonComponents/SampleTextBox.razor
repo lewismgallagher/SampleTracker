@@ -6,22 +6,36 @@
 
 
 <div class="mb-3">
-    <InputText type="text" class="form-control" @bind-Value="Sample.IdentifyingValue" />
+    <InputText type="text" class=" form-control"
+     @onfocusout="Save" @bind-Value="Sample.IdentifyingValue" />
 </div>
 
 @code {
     [Parameter]
     public SampleDTO SampleToEdit { get; set; }
-
-    public SampleDTO Sample { get; set; }
     [Parameter]
     public SampleTypeDTO SampleType { get; set; }
-    
+
+    public SampleDTO Sample { get; set; }
+
+
+
+
+    public bool HasSaved { get; set; }
+    //TODO fix sample type being lost on existing values.
+
     protected override void OnInitialized()
     {
         Sample = new SampleDTO();
-        SampleType = new SampleTypeDTO();
-       
+
+
         if (SampleToEdit != null) { Sample = SampleToEdit; }
+    }
+
+
+    public void Save()
+    {
+        var sam = SampleType;
+        HasSaved = true;
     }
 }
