@@ -5,37 +5,33 @@
 @using SampleTracker.Components.CommonComponents;
 
 
+
 <div class="mb-3">
     <InputText type="text" class=" form-control"
-     @onfocusout="Save" @bind-Value="Sample.IdentifyingValue" />
+               @onfocusout="() => Finished.InvokeAsync(Sample)" @onfocusin="SetOriginalValue" @bind-Value="Sample.IdentifyingValue" />
 </div>
 
 @code {
-    [Parameter]
-    public SampleDTO SampleToEdit { get; set; }
-    [Parameter]
-    public SampleTypeDTO SampleType { get; set; }
 
+
+    [Parameter]
     public SampleDTO Sample { get; set; }
 
+    public SampleDTO SampleToEdit { get; set; }
 
 
+    public string OriginalValue { get; set; }
 
-    public bool HasSaved { get; set; }
-    //TODO fix sample type being lost on existing values.
+    [Parameter]
+    public EventCallback<SampleDTO> Finished { get; set; }
 
-    protected override void OnInitialized()
+    
+
+    public void SetOriginalValue()
     {
-        Sample = new SampleDTO();
-
-
-        if (SampleToEdit != null) { Sample = SampleToEdit; }
+        OriginalValue = Sample.IdentifyingValue;
     }
 
 
-    public void Save()
-    {
-        var sam = SampleType;
-        HasSaved = true;
-    }
+
 }

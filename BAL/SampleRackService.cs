@@ -18,6 +18,24 @@ namespace BAL
         {
             _context = context;
         }
+
+        public async Task<bool> CheckSampleExists(string IdentifyingValue)
+        {
+            return await _context.Samples.AnyAsync(s => s.IdentifyingValue == IdentifyingValue && s.Deleted != true);
+        }
+
+        public async Task<int> GetSampleIdByIdentifyingValue(string Identifyingvalue)
+        {
+            return await _context.Samples.Where(s => s.IdentifyingValue == Identifyingvalue && s.Deleted != true)
+                .Select(s => s.Id).FirstOrDefaultAsync();
+        }
+
+        public async Task<SampleDTO> GetSampleByIdentifyingValue(string value)
+        {
+            return await _context.Samples.Where(s => s.IdentifyingValue == value && s.Deleted != true)
+                .ToSampleDTOs().FirstOrDefaultAsync();
+        }
+
         public async Task<List<SampleRackDTO>> GetRacks()
         {
             return await _context.Racks.Where(r => r.Deleted != true).ToSampleRackDTOs().ToListAsync();
@@ -33,6 +51,7 @@ namespace BAL
             return await query.ToRackDTOs().ToListAsync();
         }
 
+        //Shorten and refactor
         public async Task<SampleRackDTO> GetRack(int id)
         {
             var query =  _context.Racks.Include(r => r.Samples)
@@ -43,7 +62,7 @@ namespace BAL
 
         public async Task<List<SampleDTO>> GetRackSamples(int rackId)
         {
-            var query = _context.Samples.Where(s => s.RackId == rackId).Include(s => s.SampleType)
+            var query = _context.Samples.Where(s => s.RackId == rackId && s.Deleted != true).Include(s => s.SampleType)
                 .ToSampleDTOs();
             return await query.ToListAsync();
         }
@@ -62,7 +81,8 @@ namespace BAL
                     IdentifyingValue = editedSample.IdentifyingValue,
                     RowNumber = editedSample.RowNumber,
                     ColumnNumber = editedSample.ColumnNumber,
-                    //SampleTypeId = editedSample.SampleTypeId
+                    RackId = editedSample.RackId,
+                    SampleTypeId = editedSample.SampleTypeId
                 };
                 _context.Samples.Add(sample);
             }
@@ -72,6 +92,7 @@ namespace BAL
                 sampleToEdit.IdentifyingValue = editedSample.IdentifyingValue;
                 sampleToEdit.RowNumber = editedSample.RowNumber;
                 sampleToEdit.ColumnNumber = editedSample.ColumnNumber;
+                sampleToEdit.RackId = editedSample.RackId;
             }
 
             return await _context.SaveChangesAsync() >= 0;

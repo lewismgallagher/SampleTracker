@@ -9,7 +9,7 @@
 @inject NavigationManager NavigationManager
 
 
- 
+
 @if (!HasLoaded)
 {
     <h3>SamplesPage @RackId </h3>
@@ -22,8 +22,8 @@ else
 {
     <h3>SamplesPage @RackId  @Rack.RackName</h3>
 
-    <select @bind="SelectedSampleTypeId"  @bind:after="ChangeSampleType">
-        <option value="0"> Sample Type</option>
+    <select @bind="SelectedSampleTypeId" @bind:after="ChangeSampleType">
+        @* <option value="0"> Sample Type</option> *@
 
         @foreach (var st in SampleTypes)
         {
@@ -38,39 +38,37 @@ else
 
 
 
-                    <tr>
+                <tr>
                     <th scope="col"></th>
 
-                        @for (int i = 1; i < Rack.NumberOfColumns + 1; i++)
+                    @for (int i = 1; i < Rack.NumberOfColumns + 1; i++)
                     {
                         <th scope="col">@i</th>
                     }
-                    </tr>
-                
+                </tr>
+
 
             </thead>
             <tbody>
                 @for (int r = 1; r < Rack.NumberOfRows + 1; r++)
                 {
-                <tr>
+                    <tr>
                         <th scope="row">@r</th>
-                    @for (int c = 1; c < Rack.NumberOfColumns + 1; c++)
+                        @for (int c = 1; c < Rack.NumberOfColumns + 1; c++)
                         {
                             <th scope="row">
                                 @if (CheckSampleExistsInRack(c, r))
                                 {
-                                    <SampleTextBox SampleToEdit="GetSample(c,r)" 
-                                    SampleType="GetSampleTypeFromExistingSample(GetSample(c,r).SampleTypeId ?? 0)"></SampleTextBox>
+                                    <SampleTextBox Finished="SaveSample" Sample="GetSample(c,r)" ></SampleTextBox>
                                 }
                                 else
                                 {
-                                    <SampleTextBox SampleToEdit="CreateEmptySample(c,r)" 
-                                    SampleType="SelectedSampleType" ></SampleTextBox>
+                                    <SampleTextBox Finished="SaveSample" Sample="CreateEmptySample(c,r)" ></SampleTextBox>
                                 }
                             </th>
                         }
-                    
-                </tr>
+
+                    </tr>
                 }
 
             </tbody>
