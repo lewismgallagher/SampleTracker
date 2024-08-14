@@ -17,15 +17,11 @@
     [Parameter]
     public SampleDTO Sample { get; set; }
 
-    public SampleDTO SampleToEdit { get; set; }
-
-
     public string OriginalValue { get; set; }
 
     [Parameter]
     public EventCallback<SampleDTO> Finished { get; set; }
 
-    
 
     public void SetOriginalValue()
     {

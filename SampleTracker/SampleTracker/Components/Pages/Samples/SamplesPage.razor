@@ -57,14 +57,8 @@ else
                         @for (int c = 1; c < Rack.NumberOfColumns + 1; c++)
                         {
                             <th scope="row">
-                                @if (CheckSampleExistsInRack(c, r))
-                                {
-                                    <SampleTextBox Finished="SaveSample" Sample="GetSample(c,r)" ></SampleTextBox>
-                                }
-                                else
-                                {
-                                    <SampleTextBox Finished="SaveSample" Sample="CreateEmptySample(c,r)" ></SampleTextBox>
-                                }
+                                    <SampleTextBox Finished="SaveSample" Sample="Samples.
+                                    FirstOrDefault(x => x.RowNumber == r && x.ColumnNumber == c)" ></SampleTextBox>
                             </th>
                         }
 
