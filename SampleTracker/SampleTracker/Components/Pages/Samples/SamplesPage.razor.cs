@@ -87,10 +87,6 @@ namespace SampleTracker.Components.Pages.Samples
         // Add functionality to remove sample if being moved from to a different cell on the same rack
         public async Task SaveSample(SampleDTO editedSample)
         {
-            Console.WriteLine("column " + editedSample.ColumnNumber + " Row "
-                + editedSample.RowNumber + "Focus out"
-                + "OldValue = " + editedSample.OriginalIdentifyingValue
-                + "NewValue = " + editedSample.IdentifyingValue);
             //if true sample hasn't been edited
 
             if (editedSample.IdentifyingValue == editedSample.OriginalIdentifyingValue) return;
