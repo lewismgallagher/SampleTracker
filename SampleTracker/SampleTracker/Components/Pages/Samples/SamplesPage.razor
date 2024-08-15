@@ -12,7 +12,10 @@
 
 @if (!HasLoaded)
 {
-    <h3>SamplesPage @RackId </h3>
+    <div class="col">
+    <h3 class="row">Samples </h3>
+    <h5 class="row">Rack Id: @RackId </h5>
+    </div>
 
     <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -20,10 +23,14 @@
 }
 else
 {
-    <h3>SamplesPage @RackId  @Rack.RackName</h3>
+    <div class="">
+        <h3 class="col-12">Samples </h3>
+        <h5 class="col-12">RackName: @Rack.RackName. Rack Id: @RackId </h5>
+    </div>
 
-    <select @bind="SelectedSampleTypeId" >
-        @* <option value="0"> Sample Type</option> *@
+    <div class="row">
+        <label class="  mt-auto mb-auto col-2 form-label">Select Sample Type:</label>
+        <select class="mt-auto mb-auto col-3 dropdown dropdown-header" @bind="SelectedSampleTypeId">
 
         @foreach (var st in SampleTypes)
         {
@@ -31,13 +38,11 @@ else
         }
 
     </select>
+    </div>
 
     <div class="">
         <table class="table table-hover align-middle text-center ">
             <thead>
-
-
-
                 <tr>
                     <th scope="col"></th>
 
@@ -46,8 +51,6 @@ else
                         <th scope="col">@i</th>
                     }
                 </tr>
-
-
             </thead>
             <tbody>
                 @for (int r = 1; r < Rack.NumberOfRows + 1; r++)
@@ -57,11 +60,9 @@ else
                         @for (int c = 1; c < Rack.NumberOfColumns + 1; c++)
                         {
                             <th scope="row">
-                                    <SampleTextBox Finished="SaveSample" Sample="Samples.
-                                    FirstOrDefault(x => x.RowNumber == r && x.ColumnNumber == c)" ></SampleTextBox>
+                                    <SampleTextBox Finished="SaveSample" Sample="GetSample(c,r)" ></SampleTextBox>
                             </th>
                         }
-
                     </tr>
                 }
 

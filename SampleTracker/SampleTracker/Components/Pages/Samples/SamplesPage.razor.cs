@@ -71,11 +71,6 @@ namespace SampleTracker.Components.Pages.Samples
             return sample;
         }
 
-        //public void ChangeSampleType()
-        //{
-        //    SelectedSampleType = SampleTypes.FirstOrDefault(x => x.Id == SelectedSampleTypeId);
-        //}
-
         public SampleTypeDTO GetSampleTypeFromExistingSample(int sampleTypeId)
         {
             return SampleTypes.FirstOrDefault(x => x.Id == sampleTypeId);
@@ -92,9 +87,9 @@ namespace SampleTracker.Components.Pages.Samples
             if (string.IsNullOrEmpty(editedSample.IdentifyingValue) && !string.IsNullOrWhiteSpace(editedSample.OriginalIdentifyingValue))
             {
                 await SampleRackService.DeleteSample(editedSample.Id);
-                Samples.Remove(editedSample);
-                editedSample = CreateEmptySample(editedSample.ColumnNumber, editedSample.RowNumber);
-                Samples.Add(editedSample);
+
+                RenewSampleInSamplesList(editedSample);
+
                 return;
             }
 
@@ -107,22 +102,25 @@ namespace SampleTracker.Components.Pages.Samples
 
             // Check if Samples exists in this rack
             bool sampleExistsInThisRack = CheckSampleExistsInThisRack(editedSample);
+
             if (sampleExistsInThisRack)
             {
                 var existingSample = GetSampleFromRackByEditedSample(editedSample);
-                editedSample.Id = existingSample.Id;
-                editedSample.SampleType = existingSample.SampleType;
-                editedSample.SampleTypeId = existingSample.SampleTypeId;
+                UpdateExistingSample(existingSample, editedSample);
+                RenewSampleInSamplesList(existingSample);
             }
 
-            bool sampleExists = await SampleRackService.CheckSampleExists(editedSample.IdentifyingValue);
-
-            if (sampleExists)
+            // Check sample exists somewhere on the system
+            if (sampleExistsInThisRack == false)
             {
-               var existingSample = await SampleRackService.GetSampleByIdentifyingValue(editedSample.IdentifyingValue);
-                editedSample.Id = existingSample.Id;
-                editedSample.SampleType = existingSample.SampleType;
-                editedSample.SampleTypeId = existingSample.SampleTypeId;
+                bool sampleExists = await SampleRackService.CheckSampleExists(editedSample.IdentifyingValue);
+
+                if (sampleExists == true)
+                {
+                    var existingSample = await SampleRackService.GetSampleByIdentifyingValue(editedSample.IdentifyingValue);
+
+                    UpdateExistingSample(existingSample, editedSample);
+                }
             }
 
             if (editedSample.Id == 0)
@@ -131,15 +129,6 @@ namespace SampleTracker.Components.Pages.Samples
                 editedSample.SampleType = SampleTypes
                     .FirstOrDefault(st => st.Id == SelectedSampleTypeId).Name;
             };
-
-            if (sampleExistsInThisRack)
-            {
-                var existingSample = GetSampleFromRackByEditedSample(editedSample);
-
-                Samples.Remove(existingSample);
-                existingSample = CreateEmptySample(existingSample.ColumnNumber, existingSample.RowNumber);
-                Samples.Add(existingSample);
-            }
 
             // Save
             await SampleRackService.SaveChangesAsync(editedSample);
@@ -154,16 +143,25 @@ namespace SampleTracker.Components.Pages.Samples
             editedSample.OriginalIdentifyingValue = editedSample.IdentifyingValue;
         }
 
+        public void UpdateExistingSample(SampleDTO existingSample, SampleDTO editedSample)
+        {
+            editedSample.Id = existingSample.Id;
+            editedSample.SampleType = existingSample.SampleType;
+            editedSample.SampleTypeId = existingSample.SampleTypeId;
+        }
+
+        public void RenewSampleInSamplesList(SampleDTO sample)
+        {
+            Samples.Remove(sample);
+            sample = CreateEmptySample(sample.ColumnNumber, sample.RowNumber);
+            Samples.Add(sample);
+        }
+
         public bool CheckSampleExistsInThisRack(SampleDTO editedSample)
         {
             return Samples.Any(s => s.IdentifyingValue == editedSample.IdentifyingValue
             && (s.ColumnNumber != editedSample.ColumnNumber
             || s.RowNumber != editedSample.RowNumber));
-        }
-
-        public SampleDTO GetSampleFromRackByIdentifyingValue(string identifyingValue)
-        {
-            return Samples.FirstOrDefault(s => s.IdentifyingValue == identifyingValue);
         }
 
         public SampleDTO GetSampleFromRackByEditedSample(SampleDTO editedSample)
