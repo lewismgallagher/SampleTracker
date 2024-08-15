@@ -20,7 +20,6 @@ namespace SampleTracker.Components.Pages.Samples
         public List<SampleTypeDTO> SampleTypes { get; set; }
         public bool HasLoaded { get; set; }
         public int SelectedSampleTypeId { get; set; }
-        public SampleTypeDTO SelectedSampleType { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,7 +35,6 @@ namespace SampleTracker.Components.Pages.Samples
             CreateSamplesList();
 
             //Default Sample Type
-            SelectedSampleType = new SampleTypeDTO();
             SelectedSampleTypeId = 1;
             HasLoaded = true;
 
@@ -73,18 +71,17 @@ namespace SampleTracker.Components.Pages.Samples
             return sample;
         }
 
-        public void ChangeSampleType()
-        {
-            SelectedSampleType = SampleTypes.FirstOrDefault(x => x.Id == SelectedSampleTypeId);
-        }
+        //public void ChangeSampleType()
+        //{
+        //    SelectedSampleType = SampleTypes.FirstOrDefault(x => x.Id == SelectedSampleTypeId);
+        //}
 
         public SampleTypeDTO GetSampleTypeFromExistingSample(int sampleTypeId)
         {
             return SampleTypes.FirstOrDefault(x => x.Id == sampleTypeId);
         }
 
-
-        // Add functionality to remove sample if being moved from to a different cell on the same rack
+        //TODO Heavily refactor, split up and simplify this method
         public async Task SaveSample(SampleDTO editedSample)
         {
             //if true sample hasn't been edited
@@ -114,19 +111,25 @@ namespace SampleTracker.Components.Pages.Samples
             {
                 var existingSample = GetSampleFromRackByEditedSample(editedSample);
                 editedSample.Id = existingSample.Id;
+                editedSample.SampleType = existingSample.SampleType;
+                editedSample.SampleTypeId = existingSample.SampleTypeId;
             }
 
             bool sampleExists = await SampleRackService.CheckSampleExists(editedSample.IdentifyingValue);
 
             if (sampleExists)
             {
-                int sampleId = await SampleRackService.GetSampleIdByIdentifyingValue(editedSample.IdentifyingValue);
-                editedSample.Id = sampleId;
+               var existingSample = await SampleRackService.GetSampleByIdentifyingValue(editedSample.IdentifyingValue);
+                editedSample.Id = existingSample.Id;
+                editedSample.SampleType = existingSample.SampleType;
+                editedSample.SampleTypeId = existingSample.SampleTypeId;
             }
 
             if (editedSample.Id == 0)
             {
                 editedSample.SampleTypeId = SelectedSampleTypeId;
+                editedSample.SampleType = SampleTypes
+                    .FirstOrDefault(st => st.Id == SelectedSampleTypeId).Name;
             };
 
             if (sampleExistsInThisRack)

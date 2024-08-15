@@ -5,10 +5,15 @@
 @using SampleTracker.Components.CommonComponents;
 
 
+<div class="mb-auto" >
+    <Tooltip Text="@Sample.SampleType">
+        <InputText  type="text" class=" form-control"
+                       @onmouseover="ShowSampleType" @onmouseout="HideSampleType"
+                       @onfocusout="() => Finished.InvokeAsync(Sample)" @onfocusin="SetOriginalValue"
+                       @bind-Value="Sample.IdentifyingValue" />
+    </Tooltip>
 
-<div class="mb-3">
-    <InputText type="text" class=" form-control"
-               @onfocusout="() => Finished.InvokeAsync(Sample)" @onfocusin="SetOriginalValue" @bind-Value="Sample.IdentifyingValue" />
+
 </div>
 
 @code {
@@ -17,15 +22,30 @@
     [Parameter]
     public SampleDTO Sample { get; set; }
 
+
     public string OriginalValue { get; set; }
 
     [Parameter]
     public EventCallback<SampleDTO> Finished { get; set; }
 
+    public bool SampleTypeVisible { get; set; }
 
     public void SetOriginalValue()
     {
         OriginalValue = Sample.IdentifyingValue;
+    }
+
+    public void ShowSampleType()
+    {
+        if (string.IsNullOrWhiteSpace(Sample.SampleType) == false)
+        {
+            SampleTypeVisible = true;
+        }
+    }
+
+    public void HideSampleType()
+    {
+        SampleTypeVisible = false;
     }
 
 }

@@ -22,7 +22,7 @@ else
 {
     <h3>SamplesPage @RackId  @Rack.RackName</h3>
 
-    <select @bind="SelectedSampleTypeId" @bind:after="ChangeSampleType">
+    <select @bind="SelectedSampleTypeId" >
         @* <option value="0"> Sample Type</option> *@
 
         @foreach (var st in SampleTypes)

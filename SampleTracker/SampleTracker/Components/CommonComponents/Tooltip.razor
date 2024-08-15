@@ -1,0 +1,69 @@
+﻿<style>
+    .tooltip-wrapper {
+        position: relative;
+        display: inline-block;
+        cursor: help;
+    }
+
+    #spanText {
+        /* visibility: hidden; */
+        position: absolute;
+        width: 120px;
+        top: 100%;
+        left: 50%;
+        margin-left: -60px;
+        background-color: #363636;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        z-index: 1;
+    }
+
+        #spanText::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+
+/*     .tooltip-wrapper:hover #spanText {
+        visibility: visible;
+    } */
+</style>
+
+
+@rendermode InteractiveServer
+
+<div @onmouseenter="SetToVisibile" @onmouseleave="SetToHidden" class="tooltip-wrapper">
+
+    @if (Visibility && string.IsNullOrWhiteSpace(Text) == false)
+    {
+    <span id="spanText">@((MarkupString)Text)</span>
+    }
+
+    @ChildContent
+
+</div>
+
+@code {
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public string Text { get; set; }
+    public bool Visibility { get; set; }
+
+    public void SetToVisibile()
+    {
+        Visibility = true;
+    }
+
+    public void SetToHidden()
+    {
+        Visibility = false;
+    }
+
+}
