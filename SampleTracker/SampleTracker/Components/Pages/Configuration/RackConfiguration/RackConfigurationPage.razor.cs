@@ -1,5 +1,5 @@
-using BAL;
-using BAL.DTOs;
+using Services;
+using Services.DTOs;
 using Global.Enums;
 using Microsoft.AspNetCore.Components.Forms;
 

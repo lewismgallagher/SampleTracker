@@ -1,4 +1,4 @@
-﻿using BAL.DTOs;
+﻿using Services.DTOs;
 using DAL.Data.Entities;
 using DAL.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL
+namespace Services
 {
     public class SampleTypeConfigurationService
     {

@@ -1,0 +1,6 @@
+@SampleTrackerWebAPI_HostAddress = http://localhost:5094
+
+GET {{SampleTrackerWebAPI_HostAddress}}/configuration/racks/
+Accept: application/json
+
+###

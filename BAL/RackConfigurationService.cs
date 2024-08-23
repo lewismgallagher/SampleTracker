@@ -1,4 +1,4 @@
-﻿using BAL.DTOs;
+﻿using Services.DTOs;
 using DAL.Data.Entities;
 using DAL.Data.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL
+namespace Services
 {
     public class RackConfigurationService
     {
@@ -27,6 +27,36 @@ namespace BAL
         public async Task<List<RackConfigurationDTO>> GetRacks()
         {
             return await _context.Racks.Where(r => r.Deleted != true).ToRackConfigurationDTOs().ToListAsync();
+        }
+
+        public async Task<Rack> CreateAsync(RackConfigurationDTO editedRack)
+        {
+            Rack rack = new Rack();
+
+            if (editedRack.Id == 0)
+            {
+
+                rack.RackName = editedRack.RackName;
+                rack.NumberOfRows = editedRack.NumberOfRows;
+                rack.NumberOfColumns = editedRack.NumberOfColumns;
+                _context.Racks.Add(rack);
+            }
+
+             await _context.SaveChangesAsync();
+
+            return rack;
+        }
+
+        public async Task<Rack> Updateasync(RackConfigurationDTO editedRack)
+        {
+                var rackToEdit = await _context.Racks.FirstOrDefaultAsync(r => r.Id == editedRack.Id);
+                rackToEdit.RackName = editedRack.RackName;
+                rackToEdit.NumberOfColumns = editedRack.NumberOfColumns;
+                rackToEdit.NumberOfRows = editedRack.NumberOfRows;
+
+             await _context.SaveChangesAsync();
+
+            return rackToEdit;
         }
 
         public async Task<bool> SaveChangesAsync(RackConfigurationDTO editedRack)

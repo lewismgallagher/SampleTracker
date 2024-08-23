@@ -1,4 +1,4 @@
-using BAL.DTOs;
+using Services.DTOs;
 using DAL.Data.Entities;
 using Global.Enums;
 using Microsoft.AspNetCore.Components;
