@@ -23,6 +23,18 @@ builder.Services.AddAuthentication(options =>
 })
     .AddIdentityCookies();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CORSPolicy",
+        builder =>
+        {
+            builder
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithOrigins("http://localhost:4200");
+        });
+});
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ISampleTrackerDbContext, SampleTrackerDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -43,8 +55,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
 
+    
+}
+app.UseCors("CORSPolicy");
 //app.UseHttpsRedirection();
 
 app.MapRackConfiguration();
