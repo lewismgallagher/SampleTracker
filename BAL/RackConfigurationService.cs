@@ -33,15 +33,10 @@ namespace Services
         {
             Rack rack = new Rack();
 
-            if (editedRack.Id == 0)
-            {
-
                 rack.RackName = editedRack.RackName;
                 rack.NumberOfRows = editedRack.NumberOfRows;
                 rack.NumberOfColumns = editedRack.NumberOfColumns;
                 _context.Racks.Add(rack);
-            }
-
              await _context.SaveChangesAsync();
 
             return rack;

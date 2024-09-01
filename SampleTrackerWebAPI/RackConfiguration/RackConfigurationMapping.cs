@@ -8,8 +8,8 @@
 
             groupBuilder.MapGet("/", RackConfigurationEndpoints.GetRacks);
             groupBuilder.MapGet("/{id}", RackConfigurationEndpoints.GetRack).WithName("GetRack");
-            groupBuilder.MapPost("/create/{rack}", RackConfigurationEndpoints.CreateRack);
-            groupBuilder.MapPut("/update/{rack}", RackConfigurationEndpoints.UpdateRack);
+            groupBuilder.MapPost("/create/", RackConfigurationEndpoints.CreateRack);
+            groupBuilder.MapPut("/update/", RackConfigurationEndpoints.UpdateRack);
             groupBuilder.MapDelete("/delete", RackConfigurationEndpoints.DeleteRack);
 
             return builder;
