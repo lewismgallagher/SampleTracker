@@ -15,7 +15,7 @@ namespace SampleTrackerWebAPI.RackConfiguration
         }
         public static async Task<IResult> GetRacks(RackConfigurationService service)
         {
-            return TypedResults.Ok( await service.GetRacks());
+            return TypedResults.Ok(await service.GetRacks());
         }
 
         //todo return newly saved object with new id.
@@ -23,31 +23,35 @@ namespace SampleTrackerWebAPI.RackConfiguration
         {
             var result = await service.CreateAsync(rack);
 
+            if (result != null)
+            {
                 return TypedResults.CreatedAtRoute(
                 routeName: "GetRack",
-                routeValues: new { id = rack.Id },
+                routeValues: new { id = result.Id },
                 value: rack);
-
-            //else return TypedResults.UnprocessableEntity();
+            }
+            else return Results.StatusCode(statusCode: 500);
         }
 
-        public static async Task<IResult> UpdateRack(RackConfigurationService service,[FromBody] RackConfigurationDTO rack)
+        public static async Task<IResult> UpdateRack(RackConfigurationService service, [FromBody] RackConfigurationDTO rack)
         {
-            if(rack.Id == 0) { return TypedResults.UnprocessableEntity(); }
+            if (rack.Id == 0) { return TypedResults.UnprocessableEntity(); }
 
             var result = await service.Updateasync(rack);
 
-            return TypedResults.Ok();
+            if (result != null) { return TypedResults.Ok(); }
+            else return Results.StatusCode(statusCode: 500);
+
         }
 
         //TODO make delete return what object was deleted
         public static async Task<IResult> DeleteRack(RackConfigurationService service, int id)
         {
-            if (id == 0) {  }
+            if (id == 0) { }
 
             var result = await service.DeleteRack(id);
 
-            if (result) {  return TypedResults.Ok(); }
+            if (result) { return TypedResults.Ok(); }
             else
             {
                 return TypedResults.UnprocessableEntity();
