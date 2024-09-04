@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Services;
 using Microsoft.AspNetCore.Identity;
 using SampleTrackerWebAPI.RackConfiguration;
+using SampleTrackerWebAPI.Samples;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +63,7 @@ app.UseCors("CORSPolicy");
 //app.UseHttpsRedirection();
 
 app.MapRackConfiguration();
+app.MapSamples();
 
 app.Run();
 

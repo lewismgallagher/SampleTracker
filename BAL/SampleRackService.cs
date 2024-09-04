@@ -19,26 +19,21 @@ namespace Services
             _context = context;
         }
 
-        public async Task<bool> CheckSampleExists(string IdentifyingValue)
+        public async Task<bool> CheckSampleExists(string identifyingValue)
         {
-            return await _context.Samples.AnyAsync(s => s.IdentifyingValue == IdentifyingValue && s.Deleted != true);
+            return await _context.Samples.AnyAsync(s => s.IdentifyingValue == identifyingValue && s.Deleted != true);
         }
 
-        public async Task<int> GetSampleIdByIdentifyingValue(string Identifyingvalue)
+        public async Task<int> GetSampleIdByIdentifyingValue(string identifyingvalue)
         {
-            return await _context.Samples.Where(s => s.IdentifyingValue == Identifyingvalue && s.Deleted != true)
+            return await _context.Samples.Where(s => s.IdentifyingValue == identifyingvalue && s.Deleted != true)
                 .Select(s => s.Id).FirstOrDefaultAsync();
         }
 
-        public async Task<SampleDTO> GetSampleByIdentifyingValue(string value)
+        public async Task<SampleDTO> GetSampleByIdentifyingValue(string identifyingvalue)
         {
-            return await _context.Samples.Where(s => s.IdentifyingValue == value && s.Deleted != true)
+            return await _context.Samples.Where(s => s.IdentifyingValue == identifyingvalue && s.Deleted != true)
                 .ToSampleDTOs().FirstOrDefaultAsync();
-        }
-
-        public async Task<List<SampleRackDTO>> GetRacks()
-        {
-            return await _context.Racks.Where(r => r.Deleted != true).ToSampleRackDTOs().ToListAsync();
         }
 
         public async Task<List<RackDTO>> SearchRacks(int? id, string name)
@@ -70,6 +65,34 @@ namespace Services
         public async Task<List<SampleTypeDTO>> GetSampleTypes()
         {
             return await _context.SampleTypes.Where(r => r.Deleted != true).ToSampleTypeDTOs().ToListAsync();
+        }
+
+        public async Task<bool> CreateSample(SampleDTO editedSample)
+        {
+            Sample sample = new Sample()
+            {
+                IdentifyingValue = editedSample.IdentifyingValue,
+                RowNumber = editedSample.RowNumber,
+                ColumnNumber = editedSample.ColumnNumber,
+                RackId = editedSample.RackId,
+                SampleTypeId = editedSample.SampleTypeId
+            };
+            _context.Samples.Add(sample);
+
+            return await _context.SaveChangesAsync() >= 0;
+
+        }
+
+        public async Task<bool> UpdateSample(SampleDTO editedSample)
+        {
+            var sampleToEdit = await _context.Samples.FirstOrDefaultAsync(s => s.Id == editedSample.Id);
+            sampleToEdit.IdentifyingValue = editedSample.IdentifyingValue;
+            sampleToEdit.RowNumber = editedSample.RowNumber;
+            sampleToEdit.ColumnNumber = editedSample.ColumnNumber;
+            sampleToEdit.RackId = editedSample.RackId;
+
+            return await _context.SaveChangesAsync() >= 0;
+
         }
 
         public async Task<bool> SaveChangesAsync(SampleDTO editedSample)
