@@ -1,4 +1,4 @@
-﻿using DAL.Data.Entities;
+using DAL.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Services;
 using Services.DTOs;
@@ -37,10 +37,9 @@ namespace SampleTrackerWebAPI.Samples
 
         }
 
-        public static async Task<IResult> GetRackSamples(SampleRackService service, int rackId)
+        public static async Task<IResult> GetRackSamples(SampleRackService service,int rackId, int numberOfColumns, int numberOfRows)
         {
-            return TypedResults.Ok(await service.GetRackSamples(rackId));
-
+            return TypedResults.Ok(await service.GetRackSamplesAndPlaceHolders(rackId, numberOfColumns, numberOfRows));
         }
 
         public static async Task<IResult> GetSampleTypes(SampleRackService service)

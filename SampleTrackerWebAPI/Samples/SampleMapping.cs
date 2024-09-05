@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SampleTrackerWebAPI.RackConfiguration;
 using SampleTrackerWebAPI.Samples;
 namespace SampleTrackerWebAPI.Samples
@@ -14,8 +14,8 @@ namespace SampleTrackerWebAPI.Samples
 
             // getting racks, samples and sampletypes
             groupBuilder.MapGet("/racks/search", SamplesEndpoints.GetRacks).WithName("GetRacks");
-            groupBuilder.MapGet("/racks/{id}", SamplesEndpoints.GetRack).WithName("SamplesGetRack");
-            groupBuilder.MapGet("/{id}", SamplesEndpoints.GetRackSamples).WithName("GetRackSamples");
+            groupBuilder.MapGet("/racks/", SamplesEndpoints.GetRack).WithName("SamplesGetRack");
+            groupBuilder.MapGet("/", SamplesEndpoints.GetRackSamples).WithName("GetRackSamples");
             groupBuilder.MapGet("/sampletypes", SamplesEndpoints.GetSampleTypes).WithName("GetSampleTypes");
 
             // used for retrieving sample, sample id and checking if exists based on the samples unique indentifying value.
