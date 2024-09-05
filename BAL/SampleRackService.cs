@@ -62,6 +62,30 @@ namespace Services
             return await query.ToListAsync();
         }
 
+        public async Task<List<SampleDTO>> GetRackSamplesAndPlaceHolders(int rackId, int numberOfColumns, int numberOfRows)
+        {
+            var samples = await _context.Samples.Where(s => s.RackId == rackId && s.Deleted != true).Include(s => s.SampleType)
+                .ToSampleDTOs().ToListAsync();
+
+            int counter = 0;
+            for (int r = 1; r < numberOfRows + 1; r++)
+            {
+                for (int c = 1; c < numberOfColumns + 1; c++)
+                {
+                    if (samples.Any(s => s.ColumnNumber == c && s.RowNumber == r)) { continue; }
+
+                    samples.Add(new SampleDTO() { ColumnNumber = c, RowNumber = r, RackId = rackId });
+                    counter++;
+                }
+            }
+            return samples;
+        }
+
+        public SampleDTO CreateEmptySample(int col, int row, int rackId)
+        {
+            return new SampleDTO() { ColumnNumber = col, RowNumber = row, RackId = rackId};
+        }
+
         public async Task<List<SampleTypeDTO>> GetSampleTypes()
         {
             return await _context.SampleTypes.Where(r => r.Deleted != true).ToSampleTypeDTOs().ToListAsync();
