@@ -37,9 +37,9 @@ namespace SampleTrackerWebAPI.Samples
 
         }
 
-        public static async Task<IResult> GetRackSamples(SampleRackService service,int rackId, int numberOfColumns, int numberOfRows)
+        public static async Task<IResult> GetRackSamples(SampleRackService service, int rackId)
         {
-            return TypedResults.Ok(await service.GetRackSamplesAndPlaceHolders(rackId, numberOfColumns, numberOfRows));
+            return TypedResults.Ok(await service.GetRackSamples(rackId));
         }
 
         public static async Task<IResult> GetSampleTypes(SampleRackService service)
