@@ -67,7 +67,7 @@ namespace SampleTracker.Components.Pages.Samples
 
         public SampleDTO CreateEmptySample(int col, int row)
         {
-            var sample = new SampleDTO() { ColumnNumber = col, RowNumber = row, RackId = Rack.RackId };
+            var sample = new SampleDTO() { ColumnNumber = col, RowNumber = row, RackId = Rack.Id };
             return sample;
         }
 

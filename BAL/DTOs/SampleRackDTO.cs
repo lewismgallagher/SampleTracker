@@ -14,7 +14,7 @@ namespace Services.DTOs
         {
             return source.Select(r => new SampleRackDTO
             {
-                RackId = r.Id,
+                Id = r.Id,
                 RackName = r.RackName,
                 NumberOfRows = r.NumberOfRows,
                 NumberOfColumns = r.NumberOfColumns,
@@ -26,7 +26,7 @@ namespace Services.DTOs
 
     public class SampleRackDTO
     {
-        public int RackId { get; set; }
+        public int Id { get; set; }
 
         public string? RackName { get; set; }
         public int NumberOfRows { get; set; }

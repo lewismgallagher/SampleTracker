@@ -52,7 +52,7 @@ namespace Services
             var query =  _context.Racks.Include(r => r.Samples)
                 .ThenInclude(s => s.SampleType)
                 .ToSampleRackDTOs();
-           return await query.FirstOrDefaultAsync(r => r.RackId == id);
+           return await query.FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<List<SampleDTO>> GetRackSamples(int rackId)
