@@ -101,7 +101,7 @@ namespace SampleTracker.Components.Pages.Samples
             }
 
             // Check if Samples exists in this rack
-            bool sampleExistsInThisRack = CheckSampleExistsInThisRack(editedSample);
+            bool sampleExistsInThisRack = CheckEditedSampleExistsInRack(editedSample);
 
             if (sampleExistsInThisRack)
             {
@@ -157,7 +157,7 @@ namespace SampleTracker.Components.Pages.Samples
             Samples.Add(sample);
         }
 
-        public bool CheckSampleExistsInThisRack(SampleDTO editedSample)
+        public bool CheckEditedSampleExistsInRack(SampleDTO editedSample)
         {
             return Samples.Any(s => s.IdentifyingValue == editedSample.IdentifyingValue
             && (s.ColumnNumber != editedSample.ColumnNumber
