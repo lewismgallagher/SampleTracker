@@ -16,6 +16,7 @@ namespace SampleTrackerWebAPI.Samples
             groupBuilder.MapGet("/racks/search", SamplesEndpoints.GetRacks).WithName("GetRacks");
             groupBuilder.MapGet("/racks/", SamplesEndpoints.GetRack).WithName("SamplesGetRack");
             groupBuilder.MapGet("/", SamplesEndpoints.GetRackSamples).WithName("GetRackSamples");
+            groupBuilder.MapGet("/getsample", SamplesEndpoints.GetSampleById).WithName("GetSample");
             groupBuilder.MapGet("/sampletypes", SamplesEndpoints.GetSampleTypes).WithName("GetSampleTypes");
 
             // used for retrieving sample, sample id and checking if exists based on the samples unique indentifying value.

@@ -28,13 +28,17 @@ namespace SampleTrackerWebAPI.Samples
         {
             // returns the sample
             return TypedResults.Ok(await service.GetSampleIdByIdentifyingValue(Identifyingvalue));
+        }
 
+        public static async Task<IResult> GetSampleById(SampleRackService service, int id)
+        {
+            // returns the sample
+            return TypedResults.Ok(await service.GetSamplebyId(id));
         }
 
         public static async Task<IResult> GetRack(SampleRackService service, int id)
         {
             return TypedResults.Ok(await service.GetRack(id));
-
         }
 
         public static async Task<IResult> GetRackSamples(SampleRackService service, int rackId)
@@ -45,23 +49,43 @@ namespace SampleTrackerWebAPI.Samples
         public static async Task<IResult> GetSampleTypes(SampleRackService service)
         {
             return TypedResults.Ok(await service.GetSampleTypes());
-
         }
 
         public static async Task<IResult> CreateSample(SampleRackService service, SampleDTO editedSample)
         {
-            return TypedResults.Ok(await service.GetSampleTypes());
+            var result =  await service.CreateSample(editedSample);
+
+            if (result != null)
+            {
+                return TypedResults.CreatedAtRoute(
+                routeName: "GetSample",
+                routeValues: new { id = result.Id },
+                value: result);
+            }
+            else return Results.StatusCode(statusCode: 500);
         }
 
         public static async Task<IResult> UpdateSample(SampleRackService service, SampleDTO editedSample)
         {
-            return TypedResults.Ok(await service.GetSampleTypes());
+            if (editedSample.Id == 0) { return TypedResults.UnprocessableEntity(); }
+
+            var result = await service.UpdateSample(editedSample);
+
+            if (result != null) { return TypedResults.Ok(); }
+            else return Results.StatusCode(statusCode: 500);
         }
 
-        public static async Task<IResult> DeleteSample(SampleRackService service, int Id)
+        public static async Task<IResult> DeleteSample(SampleRackService service, int id)
         {
-            return TypedResults.Ok(await service.DeleteSample(Id));
+            if (id == 0) { }
 
+            var result = await service.DeleteSample(id);
+
+            if (result) { return TypedResults.Ok(); }
+            else
+            {
+                return TypedResults.UnprocessableEntity();
+            }
         }
 
     }

@@ -28,7 +28,7 @@ namespace SampleTrackerWebAPI.RackConfiguration
                 return TypedResults.CreatedAtRoute(
                 routeName: "GetRack",
                 routeValues: new { id = result.Id },
-                value: rack);
+                value: result);
             }
             else return Results.StatusCode(statusCode: 500);
         }

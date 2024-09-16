@@ -36,6 +36,11 @@ namespace Services
                 .ToSampleDTOs().FirstOrDefaultAsync();
         }
 
+        public async Task<Sample> GetSamplebyId(int id)
+        {
+            return await _context.Samples.FirstOrDefaultAsync(s => s.Id == id);
+        }
+
         public async Task<List<RackDTO>> SearchRacks(int? id, string name)
         {
             var query = _context.Racks.Where(r => r.Deleted != true);
@@ -68,7 +73,7 @@ namespace Services
             return await _context.SampleTypes.Where(r => r.Deleted != true).ToSampleTypeDTOs().ToListAsync();
         }
 
-        public async Task<bool> CreateSample(SampleDTO editedSample)
+        public async Task<Sample> CreateSample(SampleDTO editedSample)
         {
             Sample sample = new Sample()
             {
@@ -80,11 +85,12 @@ namespace Services
             };
             _context.Samples.Add(sample);
 
-            return await _context.SaveChangesAsync() >= 0;
+            await _context.SaveChangesAsync();
 
+            return sample;
         }
 
-        public async Task<bool> UpdateSample(SampleDTO editedSample)
+        public async Task<Sample> UpdateSample(SampleDTO editedSample)
         {
             var sampleToEdit = await _context.Samples.FirstOrDefaultAsync(s => s.Id == editedSample.Id);
             sampleToEdit.IdentifyingValue = editedSample.IdentifyingValue;
@@ -92,7 +98,9 @@ namespace Services
             sampleToEdit.ColumnNumber = editedSample.ColumnNumber;
             sampleToEdit.RackId = editedSample.RackId;
 
-            return await _context.SaveChangesAsync() >= 0;
+            await _context.SaveChangesAsync();
+
+            return sampleToEdit;
 
         }
 
